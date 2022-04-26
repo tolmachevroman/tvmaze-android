@@ -1,6 +1,7 @@
 package com.tv.maze.utils
 
 import com.tv.maze.models.Episode
+import com.tv.maze.models.Poster
 import com.tv.maze.models.Season
 
 //TODO use for UI tests later
@@ -42,8 +43,9 @@ class SeasonsMocks {
                         id = 4,
                         number = 4,
                         name = "Be Right Back",
-                        summary = "",
+                        summary = "Martha's boyfriend Ash is killed while returning a hire van, the day after they move into a new house in the countryside. Martha learns she is pregnant and tests a service that her friend signed her up to: by aggregating Ash's many social media posts and online communications, an artificial intelligence (AI) imitation of Ash is created.",
                         season = 2,
+                        image = Poster(original = "https://m.media-amazon.com/images/M/MV5BODk5YWUwZTEtMGFkZS00NDIyLTg4NTItOTgwNzYwOTMyMmZlXkEyXkFqcGdeQXVyNjUwNzk3NDc@._V1_.jpg")
                     ),
                     Episode(
                         id = 5,

@@ -19,7 +19,7 @@ fun SubtopicView(title: String, content: String) {
             fontSize = 18.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier
-                .padding(start = 16.dp, top = 4.dp)
+                .padding(start = 16.dp, end = 16.dp, top = 4.dp)
                 .fillMaxWidth(),
             color = Color.Black,
         )
@@ -27,7 +27,7 @@ fun SubtopicView(title: String, content: String) {
             text = content,
             fontSize = 18.sp,
             modifier = Modifier
-                .padding(start = 20.dp)
+                .padding(start = 20.dp, end = 16.dp)
                 .fillMaxWidth(),
             color = Color.Black,
         )
