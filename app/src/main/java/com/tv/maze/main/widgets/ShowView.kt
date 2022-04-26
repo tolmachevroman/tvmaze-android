@@ -1,5 +1,6 @@
 package com.tv.maze.main.widgets
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -17,13 +18,18 @@ import com.tv.maze.ui.theme.TVmazeTheme
 
 @Composable
 fun ShowView(
+    id: Int,
     name: String,
-    posterUrl: String
+    posterUrl: String,
+    onShowClick: (Int) -> Unit
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight()
+            .clickable {
+                onShowClick(id)
+            }
     ) {
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
@@ -50,8 +56,10 @@ fun ShowView(
 fun ShowViewPreview() {
     TVmazeTheme {
         ShowView(
+            id = 1,
             posterUrl = "https://as01.epimg.net/epik/imagenes/2018/03/13/portada/1520946522_348122_1520949182_noticia_normal.jpg",
-            name = "Black Mirror"
+            name = "Black Mirror",
+            onShowClick = {  }
         )
     }
 }

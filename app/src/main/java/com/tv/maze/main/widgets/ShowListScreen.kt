@@ -24,7 +24,8 @@ import com.tv.maze.R
 
 @Composable
 fun ShowListScreen(
-    onQueryChange: (String) -> Unit
+    onQueryChange: (String) -> Unit,
+    onShowClick: (Int) -> Unit
 ) {
     Column {
         SearchView(onQueryChange)
@@ -32,8 +33,10 @@ fun ShowListScreen(
         LazyColumn {
             items(25) {
                 ShowView(
+                    id = it, //TODO use real values
                     posterUrl = "https://as01.epimg.net/epik/imagenes/2018/03/13/portada/1520946522_348122_1520949182_noticia_normal.jpg",
-                    name = "Black Mirror"
+                    name = "Black Mirror",
+                    onShowClick = onShowClick
                 )
             }
         }

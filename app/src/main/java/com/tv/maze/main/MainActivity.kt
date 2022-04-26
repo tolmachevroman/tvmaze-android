@@ -9,10 +9,8 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
 import com.tv.maze.main.viewmodels.MainViewModel
+import com.tv.maze.main.widgets.MainNavigation
 import com.tv.maze.ui.theme.TVmazeTheme
-import com.tv.maze.utils.SeasonsMocks
-import com.tv.maze.main.widgets.EpisodeDetailsScreen
-import com.tv.maze.main.widgets.ShowListScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -29,12 +27,11 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    ShowListScreen(
+                    MainNavigation(
                         onQueryChange = { query: String ->
                             println(query)
                         }
                     )
-//                    EpisodeDetailsScreen(episode = SeasonsMocks.seasons[1].episodes[0])
                 }
             }
         }
