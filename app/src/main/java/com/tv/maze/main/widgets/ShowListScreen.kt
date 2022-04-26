@@ -31,7 +31,7 @@ import com.tv.maze.utils.Status
 fun ShowListScreen(
     shows: Resource<ArrayList<Show>>,
     onQueryChange: (String) -> Unit,
-    onShowClick: (Int) -> Unit
+    onShowClick: (Show) -> Unit
 ) {
     Column {
         SearchView(onQueryChange)
@@ -52,9 +52,7 @@ fun ShowListScreen(
                     shows.data?.forEach { show ->
                         item {
                             ShowView(
-                                id = show.id,
-                                posterUrl = show.image?.original,
-                                name = show.name,
+                                show = show,
                                 onShowClick = onShowClick
                             )
                         }

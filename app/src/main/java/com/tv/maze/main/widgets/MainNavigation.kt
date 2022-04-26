@@ -1,21 +1,26 @@
 package com.tv.maze.main.widgets
 
+import android.net.Uri
 import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import com.google.gson.Gson
 import com.tv.maze.data.models.Show
+import com.tv.maze.data.models.ShowType
 import com.tv.maze.utils.Resource
 import com.tv.maze.utils.SeasonsMocks
 
-enum class Route {
-    SHOW_LIST_SCREEN,
-    SHOW_DETAILS_SCREEN,
-    EPISODE_DETAILS_SCREEN,
-    FAVORITE_SHOWS_SCREEN,
-    PERSON_DETAILS_SCREEN
+enum class Route(val value: String) {
+    SHOW_LIST_SCREEN("shows"),
+    SHOW_DETAILS_SCREEN("shows/{show}"),
+    EPISODE_DETAILS_SCREEN("episodes/{episode}"),
+    FAVORITE_SHOWS_SCREEN("shows/favorite"),
+    PERSON_DETAILS_SCREEN("people/{person}")
 }
 
 @OptIn(ExperimentalAnimationApi::class)
@@ -25,9 +30,9 @@ fun MainNavigation(
     onQueryChange: (String) -> Unit
 ) {
     val navController = rememberAnimatedNavController()
-    AnimatedNavHost(navController, startDestination = Route.SHOW_LIST_SCREEN.name) {
+    AnimatedNavHost(navController, startDestination = Route.SHOW_LIST_SCREEN.value) {
         composable(
-            Route.SHOW_LIST_SCREEN.name,
+            Route.SHOW_LIST_SCREEN.value,
             enterTransition = {
                 routeEnterTransition()
             },
@@ -38,33 +43,31 @@ fun MainNavigation(
             ShowListScreen(
                 shows = shows,
                 onQueryChange = onQueryChange,
-                onShowClick = {
-                    navController.navigate(Route.SHOW_DETAILS_SCREEN.name) //TODO pass param
+                onShowClick = { show ->
+                    val json = Uri.encode(Gson().toJson(show))
+                    navController.navigate(Route.SHOW_DETAILS_SCREEN.value.replace("{show}", json))
                 }
             )
         }
         composable(
-            Route.SHOW_DETAILS_SCREEN.name,
+            Route.SHOW_DETAILS_SCREEN.value,
+            arguments = listOf(navArgument("show") { type = ShowType() }),
             enterTransition = {
                 routeEnterTransition()
             },
             exitTransition = {
                 routeExitTransition()
             }
-        ) {
-            //TODO pass real values
-            ShowDetailsScreen(
-                posterUrl = "https://es.web.img3.acsta.net/pictures/16/11/23/19/25/592195.png",
-                name = "Black Mirror",
-                days = arrayListOf("Wednesday, Thursday"),
-                time = "22:00",
-                genres = arrayListOf("Drama, Thriller"),
-                summary = "In an abstrusely dystopian future, several individuals grapple with the manipulative effects of cutting edge technology in their personal lives and behaviours.",
-                seasons = SeasonsMocks.seasons,
-                onEpisodeClick = {
-                    navController.navigate(Route.EPISODE_DETAILS_SCREEN.name) //TODO pass param
-                }
-            )
+        ) { backStackEntry ->
+            backStackEntry.arguments?.getParcelable<Show>("show")?.let { show ->
+                ShowDetailsScreen(
+                    show = show,
+                    seasons = SeasonsMocks.seasons,
+                    onEpisodeClick = {
+                        navController.navigate(Route.EPISODE_DETAILS_SCREEN.value) //TODO pass param
+                    }
+                )
+            }
         }
     }
 }

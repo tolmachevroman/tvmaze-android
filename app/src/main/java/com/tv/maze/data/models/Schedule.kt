@@ -4,7 +4,7 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class Poster(
-    val medium: String? = null,
-    val original: String?
+data class Schedule(
+    val time: String,
+    val days: ArrayList<String>
 ) : Parcelable

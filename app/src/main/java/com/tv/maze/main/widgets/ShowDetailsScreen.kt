@@ -21,17 +21,13 @@ import coil.request.ImageRequest
 import coil.size.Size
 import com.tv.maze.data.models.Episode
 import com.tv.maze.data.models.Season
+import com.tv.maze.data.models.Show
 import com.tv.maze.ui.theme.TVmazeTheme
 import com.tv.maze.utils.SeasonsMocks
 
 @Composable
 fun ShowDetailsScreen(
-    posterUrl: String,
-    name: String,
-    days: ArrayList<String>,
-    time: String,
-    genres: ArrayList<String>,
-    summary: String,
+    show: Show,
     seasons: ArrayList<Season>,
     onEpisodeClick: (Long) -> Unit
 ) {
@@ -42,7 +38,7 @@ fun ShowDetailsScreen(
         item {
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
-                    .data(posterUrl)
+                    .data(show.image?.original)
                     .size(Size.ORIGINAL)
                     .build(),
                 contentScale = ContentScale.Crop,
@@ -52,18 +48,18 @@ fun ShowDetailsScreen(
                     .height(220.dp)
             )
         }
-        item { SubtopicView(title = "Name", content = name) }
+        item { SubtopicView(title = "Name", content = show.name) }
         item {
             SubtopicView(
                 title = "Airing on",
-                content = days.joinToString(separator = ",") + " at " + time
+                content = show.schedule.days.joinToString(separator = ",") + " at " + show.schedule.time
             )
         }
-        item { SubtopicView(title = "Genres", content = genres.joinToString(separator = ",")) }
+        item { SubtopicView(title = "Genres", content = show.genres.joinToString(separator = ",")) }
         item {
             SubtopicView(
                 title = "Summary",
-                content = summary
+                content = show.summary
             )
         }
         item {
@@ -122,15 +118,16 @@ fun EpisodeView(episode: Episode, onEpisodeClick: (Long) -> Unit) {
 @Composable
 fun ShowDetailsScreenPreview() {
     TVmazeTheme {
-        ShowDetailsScreen(
-            posterUrl = "",
-            name = "Black Mirror",
-            days = arrayListOf("Wednesday, Thursday"),
-            time = "22:00",
-            genres = arrayListOf("Drama, Thriller"),
-            summary = "In an abstrusely dystopian future, several individuals grapple with the manipulative effects of cutting edge technology in their personal lives and behaviours.",
-            seasons = SeasonsMocks.seasons,
-            onEpisodeClick = { }
-        )
+        //TODO
+//        ShowDetailsScreen(
+//            posterUrl = "",
+//            name = "Black Mirror",
+//            days = arrayListOf("Wednesday, Thursday"),
+//            time = "22:00",
+//            genres = arrayListOf("Drama, Thriller"),
+//            summary = "In an abstrusely dystopian future, several individuals grapple with the manipulative effects of cutting edge technology in their personal lives and behaviours.",
+//            seasons = SeasonsMocks.seasons,
+//            onEpisodeClick = { }
+//        )
     }
 }

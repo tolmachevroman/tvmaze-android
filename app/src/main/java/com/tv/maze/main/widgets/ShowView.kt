@@ -14,26 +14,25 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import coil.size.Size
+import com.tv.maze.data.models.Show
 import com.tv.maze.ui.theme.TVmazeTheme
 
 @Composable
 fun ShowView(
-    id: Int,
-    name: String,
-    posterUrl: String?,
-    onShowClick: (Int) -> Unit
+    show: Show,
+    onShowClick: (Show) -> Unit
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight()
             .clickable {
-                onShowClick(id)
+                onShowClick(show)
             }
     ) {
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
-                .data(posterUrl)
+                .data(show.image?.original)
                 .size(Size.ORIGINAL)
                 .build(),
             contentScale = ContentScale.Crop,
@@ -41,7 +40,7 @@ fun ShowView(
             modifier = Modifier.size(120.dp)
         )
         Text(
-            text = name,
+            text = show.name,
             fontSize = 18.sp,
             modifier = Modifier
                 .padding(start = 16.dp)
@@ -55,11 +54,12 @@ fun ShowView(
 @Composable
 fun ShowViewPreview() {
     TVmazeTheme {
-        ShowView(
-            id = 1,
-            posterUrl = "https://as01.epimg.net/epik/imagenes/2018/03/13/portada/1520946522_348122_1520949182_noticia_normal.jpg",
-            name = "Black Mirror",
-            onShowClick = {  }
-        )
+        // TODO
+//        ShowView(
+//            id = 1,
+//            posterUrl = "https://as01.epimg.net/epik/imagenes/2018/03/13/portada/1520946522_348122_1520949182_noticia_normal.jpg",
+//            name = "Black Mirror",
+//            onShowClick = {  }
+//        )
     }
 }
