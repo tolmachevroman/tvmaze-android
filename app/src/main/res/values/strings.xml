@@ -16,6 +16,7 @@
     <string name="unknown_genres">Unknown genres</string>
     <string name="unknown_summary">Unknown summary</string>
     <string name="unknown_error">Unknown error, please try later</string>
+    <string name="could_not_find_shows">Could not find shows</string>
 
     <string name="search_icon_description">Search icon</string>
     <string name="clear_icon_description">Clear icon</string>

@@ -8,6 +8,8 @@ class TVMazeRepository @Inject constructor(
 ) {
     suspend fun searchShows(query: String) = tvMazeApiImpl.searchShows(query)
 
+    suspend fun searchPeople(query: String) = tvMazeApiImpl.searchPeople(query)
+
     suspend fun getShows(page: Int) = tvMazeApiImpl.getShows(page)
 
     suspend fun getSeasonsByShow(showId: Int) = tvMazeApiImpl.getSeasonsByShow(showId)

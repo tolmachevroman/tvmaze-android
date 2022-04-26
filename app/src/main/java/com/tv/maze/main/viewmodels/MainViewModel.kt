@@ -67,15 +67,26 @@ class MainViewModel @Inject constructor(
         if (query.isEmpty()) {
             shows = Resource.success(cachedShows)
         } else {
+            // Search shows
             shows = Resource.loading(null)
             viewModelScope.launch {
                 tvMazeRepository.searchShows(query).let { response ->
-                    val foundShows = response.body()
-                    shows = if (response.isSuccessful && foundShows != null) {
-                        Resource.success(foundShows.map { it.show })
+                    val showsFound = response.body()
+                    shows = if (response.isSuccessful && showsFound != null) {
+                        Resource.success(showsFound.map { it.show })
                     } else {
-                        Resource.error("Could not find shows", null)
+                        Resource.error(response.message(), null)
                     }
+                }
+            }
+
+            // Search people
+            viewModelScope.launch {
+                tvMazeRepository.searchPeople(query).let { response ->
+                    if (response.isSuccessful) {
+                        println("Found ${response.body()?.size} people")
+                    }
+
                 }
             }
         }
