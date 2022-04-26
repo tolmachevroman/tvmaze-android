@@ -1,6 +1,5 @@
 package com.tv.maze.widgets
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.ClickableText
@@ -21,9 +20,9 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import coil.size.Size
 import com.tv.maze.models.Episode
-import com.tv.maze.models.Poster
 import com.tv.maze.models.Season
 import com.tv.maze.ui.theme.TVmazeTheme
+import com.tv.maze.utils.SeasonsMocks
 
 @Composable
 fun ShowDetailsScreen(
@@ -85,29 +84,6 @@ fun ShowDetailsScreen(
 }
 
 @Composable
-fun SubtopicView(title: String, content: String) {
-    Column {
-        Text(
-            text = "$title:",
-            fontSize = 18.sp,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier
-                .padding(start = 16.dp, top = 4.dp)
-                .fillMaxWidth(),
-            color = Color.Black,
-        )
-        Text(
-            text = content,
-            fontSize = 18.sp,
-            modifier = Modifier
-                .padding(start = 20.dp)
-                .fillMaxWidth(),
-            color = Color.Black,
-        )
-    }
-}
-
-@Composable
 fun SeasonView(season: Season, onEpisodeClick: (Long) -> Unit) {
     Column {
         Text(
@@ -146,50 +122,6 @@ fun EpisodeView(episode: Episode, onEpisodeClick: (Long) -> Unit) {
 @Composable
 fun ShowDetailsScreenPreview() {
     TVmazeTheme {
-        val seasons = arrayListOf(
-            Season(
-                id = 1,
-                number = 1,
-                episodes = arrayListOf(
-                    Episode(
-                        id = 1,
-                        name = "The National Anthem",
-                        season = 1,
-                    ),
-                    Episode(
-                        id = 2,
-                        name = "Fifteen Million Merits",
-                        season = 1,
-                    ),
-                    Episode(
-                        id = 3,
-                        name = "The Entire History of You",
-                        season = 1,
-                    )
-                )
-            ),
-            Season(
-                id = 2,
-                number = 2,
-                episodes = arrayListOf(
-                    Episode(
-                        id = 4,
-                        name = "Be Right Back",
-                        season = 2,
-                    ),
-                    Episode(
-                        id = 5,
-                        name = "White Bear",
-                        season = 2,
-                    ),
-                    Episode(
-                        id = 6,
-                        name = "The Waldo Moment",
-                        season = 2,
-                    )
-                )
-            )
-        )
         ShowDetailsScreen(
             posterUrl = "",
             name = "Black Mirror",
@@ -197,7 +129,7 @@ fun ShowDetailsScreenPreview() {
             time = "22:00",
             genres = arrayListOf("Drama, Thriller"),
             summary = "In an abstrusely dystopian future, several individuals grapple with the manipulative effects of cutting edge technology in their personal lives and behaviours.",
-            seasons = seasons,
+            seasons = SeasonsMocks.seasons,
             onEpisodeClick = { }
         )
     }
