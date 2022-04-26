@@ -2,7 +2,8 @@ package com.tv.maze.main.widgets
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -14,14 +15,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.tv.maze.R
 import com.tv.maze.data.models.Show
 import com.tv.maze.utils.Resource
@@ -38,13 +36,7 @@ fun ShowListScreen(
 
         when (shows.status) {
             Status.LOADING -> {
-                Box(Modifier.fillMaxSize()) {
-                    CircularProgressIndicator(
-                        Modifier
-                            .align(Alignment.TopCenter)
-                            .padding(top = 50.dp)
-                    )
-                }
+                LoadingView()
             }
             Status.SUCCESS -> {
                 LazyColumn {
@@ -61,17 +53,7 @@ fun ShowListScreen(
                 }
             }
             Status.ERROR -> {
-                Box(Modifier.fillMaxSize()) {
-                    Text(
-                        text = shows.message ?: "Could not perform the request",
-                        fontSize = 18.sp,
-                        modifier = Modifier
-                            .align(Alignment.TopCenter)
-                            .padding(top = 50.dp),
-                        color = Color.Black,
-                    )
-
-                }
+                ErrorView(shows.message)
             }
         }
     }

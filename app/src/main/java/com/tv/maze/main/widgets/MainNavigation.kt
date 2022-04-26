@@ -10,8 +10,10 @@ import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.gson.Gson
+import com.tv.maze.data.models.Season
 import com.tv.maze.data.models.Show
 import com.tv.maze.data.models.ShowType
+import com.tv.maze.main.viewmodels.MainViewModel
 import com.tv.maze.utils.Resource
 import com.tv.maze.utils.SeasonsMocks
 
@@ -26,8 +28,11 @@ enum class Route(val value: String) {
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun MainNavigation(
-    shows: Resource<ArrayList<Show>>,
-    onQueryChange: (String) -> Unit
+    viewModel: MainViewModel
+//    shows: Resource<ArrayList<Show>>,
+//    seasonsByShow: Resource<ArrayList<Season>>,
+//    onShowClick: (Int) -> Unit,
+//    onQueryChange: (String) -> Unit
 ) {
     val navController = rememberAnimatedNavController()
     AnimatedNavHost(navController, startDestination = Route.SHOW_LIST_SCREEN.value) {
@@ -41,9 +46,12 @@ fun MainNavigation(
             }
         ) {
             ShowListScreen(
-                shows = shows,
-                onQueryChange = onQueryChange,
+                shows = viewModel.shows,
+                onQueryChange = { newQuery ->
+                    viewModel.onQueryChange(newQuery)
+                },
                 onShowClick = { show ->
+                    viewModel.getSeasonsByShow(show.id)
                     val json = Uri.encode(Gson().toJson(show))
                     navController.navigate(Route.SHOW_DETAILS_SCREEN.value.replace("{show}", json))
                 }
@@ -62,7 +70,7 @@ fun MainNavigation(
             backStackEntry.arguments?.getParcelable<Show>("show")?.let { show ->
                 ShowDetailsScreen(
                     show = show,
-                    seasons = SeasonsMocks.seasons,
+                    seasonsByShow = viewModel.seasonsByShow,
                     onEpisodeClick = {
                         navController.navigate(Route.EPISODE_DETAILS_SCREEN.value) //TODO pass param
                     }

@@ -23,12 +23,13 @@ import com.tv.maze.data.models.Episode
 import com.tv.maze.data.models.Season
 import com.tv.maze.data.models.Show
 import com.tv.maze.ui.theme.TVmazeTheme
-import com.tv.maze.utils.SeasonsMocks
+import com.tv.maze.utils.Resource
+import com.tv.maze.utils.Status
 
 @Composable
 fun ShowDetailsScreen(
     show: Show,
-    seasons: ArrayList<Season>,
+    seasonsByShow: Resource<ArrayList<Season>>,
     onEpisodeClick: (Long) -> Unit
 ) {
     LazyColumn(
@@ -73,8 +74,19 @@ fun ShowDetailsScreen(
                 color = Color.Black,
             )
         }
-        seasons.forEach { season ->
-            item { SeasonView(season, onEpisodeClick) }
+
+        when (seasonsByShow.status) {
+            Status.LOADING -> {
+                item { LoadingView() }
+            }
+            Status.SUCCESS -> {
+                seasonsByShow.data?.forEach { season ->
+                    item { SeasonView(season, onEpisodeClick) }
+                }
+            }
+            Status.ERROR -> {
+                item { ErrorView(seasonsByShow.message) }
+            }
         }
     }
 }
@@ -91,7 +103,7 @@ fun SeasonView(season: Season, onEpisodeClick: (Long) -> Unit) {
                 .fillMaxWidth(),
             color = Color.Black,
         )
-        season.episodes.forEach { episode ->
+        season.episodes?.forEach { episode ->
             EpisodeView(episode, onEpisodeClick)
         }
     }

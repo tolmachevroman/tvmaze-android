@@ -27,12 +27,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    MainNavigation(
-                        shows = mainViewModel.shows,
-                        onQueryChange = { query: String ->
-                            println(query)
-                        }
-                    )
+                    MainNavigation(mainViewModel)
                 }
             }
         }
