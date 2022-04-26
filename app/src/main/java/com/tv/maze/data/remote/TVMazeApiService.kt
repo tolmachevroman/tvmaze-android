@@ -1,5 +1,6 @@
 package com.tv.maze.data.remote
 
+import com.tv.maze.data.models.Episode
 import com.tv.maze.data.models.Season
 import com.tv.maze.data.models.Show
 import retrofit2.Response
@@ -14,4 +15,7 @@ interface TVMazeApiService {
 
     @GET("shows/{showId}/seasons")
     suspend fun getSeasonsByShow(@Path("showId") showId: Int): Response<ArrayList<Season>>
+
+    @GET("seasons/{seasonId}/episodes")
+    suspend fun getEpisodesBySeason(@Path("seasonId") seasonId: Int): Response<ArrayList<Episode>>
 }

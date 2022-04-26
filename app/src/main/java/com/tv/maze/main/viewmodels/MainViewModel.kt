@@ -28,10 +28,10 @@ class MainViewModel @Inject constructor(
     fun getAllShows() {
         viewModelScope.launch {
             tvMazeRepository.getShows(1).let { response ->
-                if (response.isSuccessful) {
-                    shows = Resource.success(response.body())
+                shows = if (response.isSuccessful) {
+                    Resource.success(response.body())
                 } else {
-                    shows = Resource.error(response.message(), null)
+                    Resource.error(response.message(), null)
                 }
             }
         }
@@ -41,8 +41,15 @@ class MainViewModel @Inject constructor(
         seasonsByShow = Resource.loading(null)
         viewModelScope.launch {
             tvMazeRepository.getSeasonsByShow(showId).let { response ->
-                if (response.isSuccessful) {
-                    seasonsByShow = Resource.success(response.body())
+                if (response.isSuccessful && response.body() != null) {
+                    val seasons = response.body()!!
+                    seasons.forEach { season ->
+                        val episodes = tvMazeRepository.getEpisodesBySeason(season.id)
+                        if (episodes.isSuccessful) {
+                            season.episodes = episodes.body()
+                        }
+                    }
+                    seasonsByShow = Resource.success(seasons)
                 } else {
                     seasonsByShow = Resource.error(response.message(), null)
                 }

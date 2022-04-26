@@ -5,9 +5,9 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 class Episode(
-    val id: Long,
+    val id: Int,
     val name: String,
-    val season: Long,
+    val season: Int,
     val number: Int,
     val summary: String,
     val image: Poster? = null

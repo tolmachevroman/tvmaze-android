@@ -7,5 +7,5 @@ import kotlinx.parcelize.Parcelize
 class Season(
     val id: Int,
     val number: Int,
-    val episodes: ArrayList<Episode>? = arrayListOf()
+    var episodes: ArrayList<Episode>? = arrayListOf()
 ) : Parcelable
