@@ -42,7 +42,7 @@ fun ShowView(
             modifier = Modifier.size(120.dp)
         )
         Text(
-            text = show.name ?: "",
+            text = show.name,
             fontSize = 18.sp,
             modifier = Modifier
                 .padding(start = 16.dp)

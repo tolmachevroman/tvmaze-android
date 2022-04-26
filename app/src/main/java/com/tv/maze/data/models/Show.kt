@@ -9,6 +9,6 @@ data class Show(
     val name: String,
     val genres: ArrayList<String>,
     val image: Poster?,
-    val summary: String,
-    val schedule: Schedule
+    val summary: String?,
+    val schedule: Schedule?
 ) : Parcelable

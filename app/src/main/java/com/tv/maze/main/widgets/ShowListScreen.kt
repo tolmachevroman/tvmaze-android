@@ -39,7 +39,6 @@ fun ShowListScreen(
         modifier = Modifier
             .fillMaxSize(),
     ) {
-//        var isKeyboardOpen by remember { mutableStateOf(false)}
         SearchView(onQueryChange)
 
         when (shows.status) {
@@ -94,7 +93,7 @@ fun SearchView(onQueryChange: (String) -> Unit) {
             Icon(
                 imageVector = Icons.Rounded.Search,
                 tint = MaterialTheme.colors.onBackground,
-                contentDescription = "Search icon"
+                contentDescription = stringResource(R.string.search_icon_description)
             )
         },
         trailingIcon = {
@@ -103,7 +102,7 @@ fun SearchView(onQueryChange: (String) -> Unit) {
                     Icon(
                         imageVector = Icons.Rounded.Clear,
                         tint = MaterialTheme.colors.onBackground,
-                        contentDescription = "Clear icon",
+                        contentDescription = stringResource(R.string.clear_icon_description),
                         modifier = Modifier.clickable {
                             showClearIcon = false
                             query = ""

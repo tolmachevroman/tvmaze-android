@@ -11,6 +11,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -21,6 +22,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import coil.size.Size
+import com.tv.maze.R
 import com.tv.maze.data.models.Episode
 import com.tv.maze.data.models.Season
 import com.tv.maze.data.models.Show
@@ -63,28 +65,40 @@ fun ShowDetailsScreen(
                     }
             )
         }
-        item { SubtopicView(title = "Name", content = show.name ?: "") }
+        item { SubtopicView(title = stringResource(R.string.name), content = show.name) }
         item {
             SubtopicView(
-                title = "Airing on",
-                content = show.schedule.days.joinToString(separator = ", ") + " at " + show.schedule.time
+                title = stringResource(R.string.airing_on),
+                content = if (show.schedule != null && show.schedule.days.isNotEmpty() && show.schedule.time.isNotBlank()) {
+                    stringResource(
+                        R.string.schedule,
+                        show.schedule.days.joinToString(separator = ", "),
+                        show.schedule.time
+                    )
+                } else {
+                    stringResource(R.string.unknown_schedule)
+                }
             )
         }
         item {
             SubtopicView(
-                title = "Genres",
-                content = show.genres.joinToString(separator = ", ")
+                title = stringResource(R.string.genres),
+                content = if (show.genres.isNullOrEmpty()) {
+                    stringResource(R.string.unknown_genres)
+                } else {
+                    show.genres.joinToString(separator = ", ")
+                }
             )
         }
         item {
             SubtopicView(
-                title = "Summary",
-                content = show.summary,
+                title = stringResource(R.string.summary),
+                content = show.summary ?: stringResource(R.string.unknown_summary),
             )
         }
         item {
             Text(
-                text = "Seasons:",
+                text = stringResource(R.string.seasons),
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier
@@ -114,7 +128,7 @@ fun ShowDetailsScreen(
 fun SeasonView(season: Season, onEpisodeClick: (Episode) -> Unit) {
     Column {
         Text(
-            text = "Season ${season.number}:",
+            text = stringResource(R.string.season_number, season.number),
             fontSize = 18.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier

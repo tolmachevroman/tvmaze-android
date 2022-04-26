@@ -10,10 +10,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import coil.size.Size
+import com.tv.maze.R
 import com.tv.maze.data.models.Episode
 import kotlin.math.min
 
@@ -51,9 +53,24 @@ fun EpisodeDetailsScreen(
                     }
             )
         }
-        item { SubtopicView(title = "Name", content = episode.name) }
-        item { SubtopicView(title = "Number", content = "${episode.number}") }
-        item { SubtopicView(title = "Season", content = "${episode.season}") }
-        item { SubtopicView(title = "Summary", content = episode.summary ?: "") }
+        item { SubtopicView(title = stringResource(R.string.name), content = episode.name) }
+        item {
+            SubtopicView(
+                title = stringResource(R.string.number),
+                content = "${episode.number}"
+            )
+        }
+        item {
+            SubtopicView(
+                title = stringResource(R.string.season),
+                content = "${episode.season}"
+            )
+        }
+        item {
+            SubtopicView(
+                title = stringResource(R.string.summary),
+                content = episode.summary ?: stringResource(R.string.unknown_summary)
+            )
+        }
     }
 }
