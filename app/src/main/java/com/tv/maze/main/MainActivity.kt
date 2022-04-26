@@ -12,6 +12,7 @@ import com.tv.maze.main.viewmodels.MainViewModel
 import com.tv.maze.ui.theme.TVmazeTheme
 import com.tv.maze.utils.SeasonsMocks
 import com.tv.maze.main.widgets.EpisodeDetailsScreen
+import com.tv.maze.main.widgets.ShowListScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -28,7 +29,12 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    EpisodeDetailsScreen(episode = SeasonsMocks.seasons[1].episodes[0])
+                    ShowListScreen(
+                        onQueryChange = { query: String ->
+                            println(query)
+                        }
+                    )
+//                    EpisodeDetailsScreen(episode = SeasonsMocks.seasons[1].episodes[0])
                 }
             }
         }
