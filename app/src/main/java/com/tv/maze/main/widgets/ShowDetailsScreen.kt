@@ -30,7 +30,7 @@ import com.tv.maze.utils.Status
 fun ShowDetailsScreen(
     show: Show,
     seasonsByShow: Resource<ArrayList<Season>>,
-    onEpisodeClick: (Int) -> Unit
+    onEpisodeClick: (Episode) -> Unit
 ) {
     LazyColumn(
         modifier = Modifier
@@ -92,7 +92,7 @@ fun ShowDetailsScreen(
 }
 
 @Composable
-fun SeasonView(season: Season, onEpisodeClick: (Int) -> Unit) {
+fun SeasonView(season: Season, onEpisodeClick: (Episode) -> Unit) {
     Column {
         Text(
             text = "Season ${season.number}:",
@@ -110,7 +110,7 @@ fun SeasonView(season: Season, onEpisodeClick: (Int) -> Unit) {
 }
 
 @Composable
-fun EpisodeView(episode: Episode, onEpisodeClick: (Int) -> Unit) {
+fun EpisodeView(episode: Episode, onEpisodeClick: (Episode) -> Unit) {
     ClickableText(
         text = AnnotatedString("- ${episode.name}"),
         style = TextStyle(
@@ -118,7 +118,7 @@ fun EpisodeView(episode: Episode, onEpisodeClick: (Int) -> Unit) {
             textDecoration = TextDecoration.Underline
         ),
         onClick = {
-            onEpisodeClick(episode.id)
+            onEpisodeClick(episode)
         },
         modifier = Modifier
             .padding(start = 20.dp, end = 16.dp, top = 3.dp, bottom = 3.dp)

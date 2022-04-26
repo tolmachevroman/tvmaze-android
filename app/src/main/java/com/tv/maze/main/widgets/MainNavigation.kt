@@ -4,18 +4,16 @@ import android.net.Uri
 import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.gson.Gson
-import com.tv.maze.data.models.Season
+import com.tv.maze.data.models.Episode
 import com.tv.maze.data.models.Show
-import com.tv.maze.data.models.ShowType
+import com.tv.maze.data.models.navigation.EpisodeType
+import com.tv.maze.data.models.navigation.ShowType
 import com.tv.maze.main.viewmodels.MainViewModel
-import com.tv.maze.utils.Resource
-import com.tv.maze.utils.SeasonsMocks
 
 enum class Route(val value: String) {
     SHOW_LIST_SCREEN("shows"),
@@ -29,10 +27,6 @@ enum class Route(val value: String) {
 @Composable
 fun MainNavigation(
     viewModel: MainViewModel
-//    shows: Resource<ArrayList<Show>>,
-//    seasonsByShow: Resource<ArrayList<Season>>,
-//    onShowClick: (Int) -> Unit,
-//    onQueryChange: (String) -> Unit
 ) {
     val navController = rememberAnimatedNavController()
     AnimatedNavHost(navController, startDestination = Route.SHOW_LIST_SCREEN.value) {
@@ -71,10 +65,30 @@ fun MainNavigation(
                 ShowDetailsScreen(
                     show = show,
                     seasonsByShow = viewModel.seasonsByShow,
-                    onEpisodeClick = {
-                        navController.navigate(Route.EPISODE_DETAILS_SCREEN.value) //TODO pass param
+                    onEpisodeClick = { episode ->
+                        val json = Uri.encode(Gson().toJson(episode))
+                        navController.navigate(
+                            Route.EPISODE_DETAILS_SCREEN.value.replace(
+                                "{episode}",
+                                json
+                            )
+                        )
                     }
                 )
+            }
+        }
+        composable(
+            Route.EPISODE_DETAILS_SCREEN.value,
+            arguments = listOf(navArgument("episode") { type = EpisodeType() }),
+            enterTransition = {
+                routeEnterTransition()
+            },
+            exitTransition = {
+                routeExitTransition()
+            }
+        ) { backStackEntry ->
+            backStackEntry.arguments?.getParcelable<Episode>("episode")?.let { episode ->
+                EpisodeDetailsScreen(episode = episode)
             }
         }
     }
