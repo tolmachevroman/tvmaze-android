@@ -6,12 +6,9 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import com.tv.maze.ui.theme.TVmazeTheme
-import com.tv.maze.widgets.ShowView
+import com.tv.maze.widgets.ShowDetailsScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,9 +20,13 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    ShowView(
+                    ShowDetailsScreen(
                         posterUrl = "https://as01.epimg.net/epik/imagenes/2018/03/13/portada/1520946522_348122_1520949182_noticia_normal.jpg",
-                        name = "Black Mirror"
+                        name = "Black Mirror",
+                        days = arrayListOf("Wednesday, Thursday"),
+                        time = "22:00",
+                        genres = arrayListOf("Drama, Thriller"),
+                        summary = "In an abstrusely dystopian future, several individuals grapple with the manipulative effects of cutting edge technology in their personal lives and behaviours."
                     )
                 }
             }
