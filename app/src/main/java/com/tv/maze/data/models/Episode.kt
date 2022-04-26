@@ -1,4 +1,4 @@
-package com.tv.maze.models
+package com.tv.maze.data.models
 
 class Episode(
     val id: Long,

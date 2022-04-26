@@ -6,6 +6,8 @@ import androidx.compose.runtime.Composable
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import com.tv.maze.data.models.Show
+import com.tv.maze.utils.Resource
 import com.tv.maze.utils.SeasonsMocks
 
 enum class Route {
@@ -19,6 +21,7 @@ enum class Route {
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun MainNavigation(
+    shows: Resource<ArrayList<Show>>,
     onQueryChange: (String) -> Unit
 ) {
     val navController = rememberAnimatedNavController()
@@ -33,6 +36,7 @@ fun MainNavigation(
             }
         ) {
             ShowListScreen(
+                shows = shows,
                 onQueryChange = onQueryChange,
                 onShowClick = {
                     navController.navigate(Route.SHOW_DETAILS_SCREEN.name) //TODO pass param

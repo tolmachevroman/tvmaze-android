@@ -19,8 +19,8 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import coil.size.Size
-import com.tv.maze.models.Episode
-import com.tv.maze.models.Season
+import com.tv.maze.data.models.Episode
+import com.tv.maze.data.models.Season
 import com.tv.maze.ui.theme.TVmazeTheme
 import com.tv.maze.utils.SeasonsMocks
 

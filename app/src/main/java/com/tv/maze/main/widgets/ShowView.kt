@@ -20,7 +20,7 @@ import com.tv.maze.ui.theme.TVmazeTheme
 fun ShowView(
     id: Int,
     name: String,
-    posterUrl: String,
+    posterUrl: String?,
     onShowClick: (Int) -> Unit
 ) {
     Row(

@@ -6,5 +6,5 @@ import javax.inject.Inject
 class TVMazeRepository @Inject constructor(
     private val tvMazeApiImpl: TVMazeApiImpl
 ) {
-    suspend fun getAllShows() = tvMazeApiImpl.getAllShows()
+    suspend fun getShows(page: Int) = tvMazeApiImpl.getShows(page)
 }

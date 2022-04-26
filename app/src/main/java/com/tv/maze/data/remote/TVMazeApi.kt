@@ -1,9 +1,9 @@
 package com.tv.maze.data.remote
 
-import com.tv.maze.models.Episode
+import com.tv.maze.data.models.Show
 import retrofit2.Response
 
 interface TVMazeApi {
 
-    suspend fun getAllShows(): Response<ArrayList<Episode>>
+    suspend fun getShows(page: Int): Response<ArrayList<Show>>
 }

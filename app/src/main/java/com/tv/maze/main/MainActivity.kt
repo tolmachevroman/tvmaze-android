@@ -28,6 +28,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colors.background
                 ) {
                     MainNavigation(
+                        shows = mainViewModel.shows,
                         onQueryChange = { query: String ->
                             println(query)
                         }

@@ -1,8 +1,8 @@
 package com.tv.maze.utils
 
-import com.tv.maze.models.Episode
-import com.tv.maze.models.Poster
-import com.tv.maze.models.Season
+import com.tv.maze.data.models.Episode
+import com.tv.maze.data.models.Poster
+import com.tv.maze.data.models.Season
 
 //TODO use for UI tests later
 class SeasonsMocks {

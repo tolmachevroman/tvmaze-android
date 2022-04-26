@@ -12,7 +12,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import coil.size.Size
-import com.tv.maze.models.Episode
+import com.tv.maze.data.models.Episode
 
 @Composable
 fun EpisodeDetailsScreen(
