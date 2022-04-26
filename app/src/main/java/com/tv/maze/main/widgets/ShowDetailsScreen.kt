@@ -2,11 +2,13 @@ package com.tv.maze.main.widgets
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.AnnotatedString
@@ -25,6 +27,7 @@ import com.tv.maze.data.models.Show
 import com.tv.maze.ui.theme.TVmazeTheme
 import com.tv.maze.utils.Resource
 import com.tv.maze.utils.Status
+import kotlin.math.min
 
 @Composable
 fun ShowDetailsScreen(
@@ -32,9 +35,14 @@ fun ShowDetailsScreen(
     seasonsByShow: Resource<ArrayList<Season>>,
     onEpisodeClick: (Episode) -> Unit
 ) {
+    val scrollState = rememberLazyListState()
+    var scrolledY = 0f
+    var previousOffset = 0
+
     LazyColumn(
         modifier = Modifier
-            .fillMaxSize()
+            .fillMaxSize(),
+        state = scrollState
     ) {
         item {
             AsyncImage(
@@ -46,7 +54,13 @@ fun ShowDetailsScreen(
                 contentDescription = null,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(220.dp)
+                    .height(260.dp)
+                    .graphicsLayer {
+                        scrolledY += scrollState.firstVisibleItemScrollOffset - previousOffset
+                        translationY = scrolledY * 0.5f
+                        previousOffset = scrollState.firstVisibleItemScrollOffset
+                        alpha = min(1f, 1 - (scrolledY / 600f))
+                    }
             )
         }
         item { SubtopicView(title = "Name", content = show.name) }
