@@ -63,7 +63,7 @@ fun ShowDetailsScreen(
                     }
             )
         }
-        item { SubtopicView(title = "Name", content = show.name) }
+        item { SubtopicView(title = "Name", content = show.name ?: "") }
         item {
             SubtopicView(
                 title = "Airing on",

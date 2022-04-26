@@ -1,11 +1,14 @@
 package com.tv.maze.data.remote
 
 import com.tv.maze.data.models.Episode
+import com.tv.maze.data.models.FoundShow
 import com.tv.maze.data.models.Season
 import com.tv.maze.data.models.Show
 import retrofit2.Response
 
 interface TVMazeApi {
+
+    suspend fun searchShows(query: String): Response<ArrayList<FoundShow>>
 
     suspend fun getShows(page: Int): Response<ArrayList<Show>>
 

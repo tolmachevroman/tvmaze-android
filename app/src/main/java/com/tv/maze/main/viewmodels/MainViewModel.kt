@@ -22,13 +22,19 @@ class MainViewModel @Inject constructor(
     private val tvMazeRepository: TVMazeRepository
 ) : ViewModel() {
 
-    var shows by mutableStateOf<Resource<ArrayList<Show>>>(Resource.loading(null))
+    var shows by mutableStateOf<Resource<List<Show>>>(Resource.loading(null))
     var seasonsByShow by mutableStateOf<Resource<ArrayList<Season>>>(Resource.loading(null))
+
+    //TODO implement in repository
+    private val cachedShows = mutableListOf<Show>()
 
     fun getAllShows() {
         viewModelScope.launch {
+            //TODO implement pagination
             tvMazeRepository.getShows(1).let { response ->
                 shows = if (response.isSuccessful) {
+                    cachedShows.addAll(response.body()!!)
+
                     Resource.success(response.body())
                 } else {
                     Resource.error(response.message(), null)
@@ -57,7 +63,22 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun onQueryChange(newQuery: String) {
+    fun onQueryChange(query: String) {
+        if (query.isEmpty()) {
+            shows = Resource.success(cachedShows)
+        } else {
+            shows = Resource.loading(null)
+            viewModelScope.launch {
+                tvMazeRepository.searchShows(query).let { response ->
+                    val foundShows = response.body()
+                    shows = if (response.isSuccessful && foundShows != null) {
+                        Resource.success(foundShows.map { it.show })
+                    } else {
+                        Resource.error("Could not find shows", null)
+                    }
+                }
+            }
+        }
 
     }
 }

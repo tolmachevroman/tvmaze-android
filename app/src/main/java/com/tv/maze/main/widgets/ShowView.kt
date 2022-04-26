@@ -30,9 +30,11 @@ fun ShowView(
                 onShowClick(show)
             }
     ) {
+        val imageUrl =
+            show.image?.original ?: show.image?.medium
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
-                .data(show.image?.original)
+                .data(imageUrl)
                 .size(Size.ORIGINAL)
                 .build(),
             contentScale = ContentScale.Crop,
@@ -40,7 +42,7 @@ fun ShowView(
             modifier = Modifier.size(120.dp)
         )
         Text(
-            text = show.name,
+            text = show.name ?: "",
             fontSize = 18.sp,
             modifier = Modifier
                 .padding(start = 16.dp)

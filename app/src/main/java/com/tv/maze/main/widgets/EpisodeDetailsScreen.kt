@@ -54,6 +54,6 @@ fun EpisodeDetailsScreen(
         item { SubtopicView(title = "Name", content = episode.name) }
         item { SubtopicView(title = "Number", content = "${episode.number}") }
         item { SubtopicView(title = "Season", content = "${episode.season}") }
-        item { SubtopicView(title = "Summary", content = episode.summary) }
+        item { SubtopicView(title = "Summary", content = episode.summary ?: "") }
     }
 }
