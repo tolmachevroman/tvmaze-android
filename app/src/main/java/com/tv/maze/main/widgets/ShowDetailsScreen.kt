@@ -54,12 +54,12 @@ fun ShowDetailsScreen(
                 contentDescription = null,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(260.dp)
+                    .height(280.dp)
                     .graphicsLayer {
                         scrolledY += scrollState.firstVisibleItemScrollOffset - previousOffset
                         translationY = scrolledY * 0.5f
                         previousOffset = scrollState.firstVisibleItemScrollOffset
-                        alpha = min(1f, 1 - (scrolledY / 600f))
+                        alpha = min(1f, 1 - (scrolledY / 800f))
                     }
             )
         }

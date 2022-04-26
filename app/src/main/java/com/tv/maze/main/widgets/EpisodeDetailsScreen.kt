@@ -15,6 +15,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import coil.size.Size
 import com.tv.maze.data.models.Episode
+import kotlin.math.min
 
 @Composable
 fun EpisodeDetailsScreen(
@@ -41,11 +42,12 @@ fun EpisodeDetailsScreen(
                 contentDescription = null,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(260.dp)
+                    .height(280.dp)
                     .graphicsLayer {
                         scrolledY += scrollState.firstVisibleItemScrollOffset - previousOffset
                         translationY = scrolledY * 0.5f
                         previousOffset = scrollState.firstVisibleItemScrollOffset
+                        alpha = min(1f, 1 - (scrolledY / 800f))
                     }
             )
         }
