@@ -12,7 +12,9 @@ import com.tv.maze.main.viewmodels.MainViewModel
 import com.tv.maze.ui.theme.TVmazeTheme
 import com.tv.maze.utils.SeasonsMocks
 import com.tv.maze.main.widgets.EpisodeDetailsScreen
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     private val mainViewModel: MainViewModel by viewModels()
@@ -30,5 +32,7 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+
+        mainViewModel.getAllShows()
     }
 }
