@@ -1,5 +1,6 @@
 package com.tv.maze.main.widgets
 
+import android.text.Html
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -10,6 +11,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.tv.maze.utils.toAnnotatedString
 
 @Composable
 fun SubtopicView(title: String, content: String) {
@@ -24,7 +26,7 @@ fun SubtopicView(title: String, content: String) {
             color = Color.Black,
         )
         Text(
-            text = content,
+            text = Html.fromHtml(content).toAnnotatedString(),
             fontSize = 18.sp,
             modifier = Modifier
                 .padding(start = 20.dp, end = 16.dp)
@@ -33,3 +35,4 @@ fun SubtopicView(title: String, content: String) {
         )
     }
 }
+

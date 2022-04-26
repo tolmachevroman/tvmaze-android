@@ -53,14 +53,19 @@ fun ShowDetailsScreen(
         item {
             SubtopicView(
                 title = "Airing on",
-                content = show.schedule.days.joinToString(separator = ",") + " at " + show.schedule.time
+                content = show.schedule.days.joinToString(separator = ", ") + " at " + show.schedule.time
             )
         }
-        item { SubtopicView(title = "Genres", content = show.genres.joinToString(separator = ",")) }
+        item {
+            SubtopicView(
+                title = "Genres",
+                content = show.genres.joinToString(separator = ", ")
+            )
+        }
         item {
             SubtopicView(
                 title = "Summary",
-                content = show.summary
+                content = show.summary,
             )
         }
         item {
