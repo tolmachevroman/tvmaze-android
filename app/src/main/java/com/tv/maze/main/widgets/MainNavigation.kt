@@ -78,6 +78,9 @@ fun MainNavigation(
                                 json
                             )
                         )
+                    },
+                    onFavoriteClick = { showId, isFavorite ->
+                        viewModel.setFavorite(showId, isFavorite)
                     }
                 )
             }

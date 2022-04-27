@@ -93,4 +93,8 @@ class MainViewModel @Inject constructor(
             }
         }
     }
+
+    fun setFavorite(showId: Int, isFavorite: Boolean) {
+        println("Setting $showId to favorite $isFavorite")
+    }
 }

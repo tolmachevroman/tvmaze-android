@@ -4,6 +4,7 @@ import android.text.Html
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -17,7 +18,9 @@ import com.tv.maze.utils.toAnnotatedString
 
 @Composable
 fun SubtopicView(title: String, content: String) {
-    Column {
+    Column(
+        modifier = Modifier.wrapContentHeight()
+    ) {
         Text(
             text = "$title:",
             fontSize = 18.sp,

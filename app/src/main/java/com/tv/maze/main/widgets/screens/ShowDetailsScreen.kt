@@ -1,11 +1,19 @@
 package com.tv.maze.main.widgets.screens
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.text.ClickableText
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.outlined.Favorite
+import androidx.compose.material.icons.outlined.FavoriteBorder
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
@@ -37,8 +45,10 @@ import kotlin.math.min
 @Composable
 fun ShowDetailsScreen(
     show: Show,
+    isFavorite: Boolean = false,
     seasonsByShow: Resource<ArrayList<Season>>,
-    onEpisodeClick: (Episode) -> Unit
+    onEpisodeClick: (Episode) -> Unit,
+    onFavoriteClick: (Int, Boolean) -> Unit
 ) {
     val scrollState = rememberLazyListState()
     var scrolledY = 0f
@@ -67,7 +77,14 @@ fun ShowDetailsScreen(
                         previousOffset = scrollState.firstVisibleItemScrollOffset
                         alpha = min(1f, 1 - (scrolledY / 800f))
                     }
-                    .padding(bottom = 6.dp)
+            )
+        }
+
+        item {
+            FavoriteView(
+                isFavorite = isFavorite,
+                showId = show.id,
+                onFavoriteClick = onFavoriteClick
             )
         }
         item { SubtopicView(title = stringResource(R.string.name), content = show.name) }
@@ -111,7 +128,7 @@ fun ShowDetailsScreen(
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier
-                    .padding(start = 16.dp, top = 6.dp)
+                    .padding(start = 16.dp)
                     .fillMaxWidth(),
                 color = Color.Black,
             )
@@ -132,6 +149,51 @@ fun ShowDetailsScreen(
             }
         }
     }
+}
+
+@Composable
+fun FavoriteView(isFavorite: Boolean, showId: Int, onFavoriteClick: (Int, Boolean) -> Unit) {
+
+    var favoriteState by remember { mutableStateOf(isFavorite) }
+
+    val icon = if (favoriteState) {
+        Icons.Filled.Favorite
+    } else {
+        Icons.Outlined.FavoriteBorder
+    }
+    val text = if (favoriteState) {
+        stringResource(R.string.remove_from_favorites)
+    } else {
+        stringResource(R.string.add_to_favorites)
+    }
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable {
+                favoriteState = !favoriteState
+                onFavoriteClick(showId, favoriteState)
+            },
+    ) {
+        Row(modifier = Modifier.padding(start = 16.dp, top = 10.dp, bottom = 8.dp)) {
+            Icon(
+                imageVector = icon,
+                tint = Color.Red,
+                contentDescription = text,
+                modifier = Modifier.size(36.dp)
+            )
+            Text(
+                text = text,
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Normal,
+                modifier = Modifier
+                    .padding(start = 16.dp)
+                    .fillMaxWidth()
+                    .align(alignment = Alignment.CenterVertically),
+                color = Color.Black,
+            )
+        }
+    }
+
 }
 
 @Composable
@@ -174,6 +236,12 @@ fun EpisodeView(episode: Episode, onEpisodeClick: (Episode) -> Unit) {
 fun ShowDetailsScreenPreview() {
     TVmazeTheme {
         val seasonsByShow = Resource.success(DataMocks.seasons)
-        ShowDetailsScreen(show = DataMocks.show, seasonsByShow = seasonsByShow, onEpisodeClick = {})
+        ShowDetailsScreen(
+            show = DataMocks.show,
+            isFavorite = false,
+            seasonsByShow = seasonsByShow,
+            onEpisodeClick = {},
+            onFavoriteClick = { _, _ -> }
+        )
     }
 }
