@@ -15,11 +15,10 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import coil.size.Size
+import com.tv.maze.R
 import com.tv.maze.data.models.Show
 import com.tv.maze.ui.theme.TVmazeTheme
-import com.tv.maze.R
-import com.tv.maze.data.models.Poster
-import com.tv.maze.data.models.Schedule
+import com.tv.maze.utils.DataMocks
 
 @Composable
 fun ShowView(
@@ -77,17 +76,6 @@ fun ShowView(
 @Composable
 fun ShowViewPreview() {
     TVmazeTheme {
-        val show = Show(
-            id = 1,
-            name = "Black Mirror",
-            genres = arrayListOf("Sci-Fi", "Drama", "Thriller"),
-            image = Poster(
-                medium = "https://as01.epimg.net/epik/imagenes/2018/03/13/portada/1520946522_348122_1520949182_noticia_normal.jpg",
-                original = null
-            ),
-            summary = "In an abstrusely dystopian future, several individuals grapple with the manipulative effects of cutting edge technology in their personal lives and behaviours.",
-            schedule = Schedule(time = "22:00", days = arrayListOf("Wednesday", "Friday"))
-        )
-        ShowView(show = show, onShowClick = { })
+        ShowView(show = DataMocks.show, onShowClick = { })
     }
 }

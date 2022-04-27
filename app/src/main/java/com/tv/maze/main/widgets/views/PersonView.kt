@@ -14,13 +14,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import coil.size.Size
 import com.tv.maze.R
 import com.tv.maze.data.models.Person
-import com.tv.maze.data.models.Poster
-import com.tv.maze.data.models.Schedule
-import com.tv.maze.data.models.Show
 import com.tv.maze.ui.theme.TVmazeTheme
+import com.tv.maze.utils.DataMocks
 
 @Composable
 fun PersonView(
@@ -46,7 +43,6 @@ fun PersonView(
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(person.image?.medium)
-                    .size(Size.ORIGINAL)
                     .error(placeholder)
                     .placeholder(placeholder)
                     .build(),
@@ -83,12 +79,6 @@ fun PersonView(
 @Composable
 fun PersonViewPreview() {
     TVmazeTheme {
-        val person = Person(
-            id = 1,
-            name = "Marina",
-            gender = "female",
-            image = null
-        )
-        PersonView(person = person, onPersonClick = { })
+        PersonView(person = DataMocks.person, onPersonClick = { })
     }
 }

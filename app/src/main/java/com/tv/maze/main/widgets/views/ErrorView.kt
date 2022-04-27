@@ -9,9 +9,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tv.maze.R
+import com.tv.maze.ui.theme.TVmazeTheme
 
 @Composable
 fun ErrorView(errorMessage: String?) {
@@ -24,5 +26,13 @@ fun ErrorView(errorMessage: String?) {
                 .padding(top = 50.dp),
             color = Color.Black,
         )
+    }
+}
+
+@Preview(showBackground = true, heightDp = 140)
+@Composable
+fun ErrorViewPreview() {
+    TVmazeTheme {
+        ErrorView(errorMessage = "Could not load shows")
     }
 }

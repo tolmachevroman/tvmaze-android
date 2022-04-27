@@ -1,11 +1,8 @@
 package com.tv.maze.utils
 
-import com.tv.maze.data.models.Episode
-import com.tv.maze.data.models.Poster
-import com.tv.maze.data.models.Season
+import com.tv.maze.data.models.*
 
-//TODO use for UI tests later
-class SeasonsMocks {
+class DataMocks {
     companion object {
         val seasons = arrayListOf(
             Season(
@@ -97,6 +94,25 @@ class SeasonsMocks {
                     )
                 )
             )
+        )
+
+        val person = Person(
+            id = 1,
+            name = "Marina",
+            gender = "female",
+            image = null
+        )
+
+        val show = Show(
+            id = 1,
+            name = "Black Mirror",
+            genres = arrayListOf("Sci-Fi", "Drama", "Thriller"),
+            image = Poster(
+                medium = "https://as01.epimg.net/epik/imagenes/2018/03/13/portada/1520946522_348122_1520949182_noticia_normal.jpg",
+                original = null
+            ),
+            summary = "In an abstrusely dystopian future, several individuals grapple with the manipulative effects of cutting edge technology in their personal lives and behaviours.",
+            schedule = Schedule(time = "22:00", days = arrayListOf("Wednesday", "Friday"))
         )
     }
 }

@@ -9,8 +9,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.tv.maze.ui.theme.TVmazeTheme
 import com.tv.maze.utils.toAnnotatedString
 
 @Composable
@@ -36,3 +38,13 @@ fun SubtopicView(title: String, content: String) {
     }
 }
 
+@Preview(showBackground = true, heightDp = 140)
+@Composable
+fun SubtopicViewPreview() {
+    TVmazeTheme {
+        SubtopicView(
+            title = "Summary",
+            content = "In an abstrusely <b>dystopian future</b>, several individuals grapple with the manipulative effects of cutting edge technology in their personal lives and behaviours."
+        )
+    }
+}
