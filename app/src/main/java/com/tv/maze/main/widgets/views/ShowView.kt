@@ -17,6 +17,7 @@ import coil.request.ImageRequest
 import coil.size.Size
 import com.tv.maze.data.models.Show
 import com.tv.maze.ui.theme.TVmazeTheme
+import com.tv.maze.R
 
 @Composable
 fun ShowView(
@@ -38,6 +39,7 @@ fun ShowView(
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(show.image?.medium)
                     .size(Size.ORIGINAL)
+                    .error(R.drawable.show_avatar)
                     .build(),
                 contentScale = ContentScale.Crop,
                 contentDescription = null,
