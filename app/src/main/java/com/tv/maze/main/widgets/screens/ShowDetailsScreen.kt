@@ -53,19 +53,19 @@ fun ShowDetailsScreen(
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(show.image?.original)
-                    .size(Size.ORIGINAL)
                     .build(),
                 contentScale = ContentScale.Crop,
                 contentDescription = null,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(280.dp)
+                    .height(320.dp)
                     .graphicsLayer {
                         scrolledY += scrollState.firstVisibleItemScrollOffset - previousOffset
                         translationY = scrolledY * 0.5f
                         previousOffset = scrollState.firstVisibleItemScrollOffset
                         alpha = min(1f, 1 - (scrolledY / 800f))
                     }
+                    .padding(bottom = 6.dp)
             )
         }
         item { SubtopicView(title = stringResource(R.string.name), content = show.name) }
@@ -96,7 +96,11 @@ fun ShowDetailsScreen(
         item {
             SubtopicView(
                 title = stringResource(R.string.summary),
-                content = show.summary ?: stringResource(R.string.unknown_summary),
+                content = if (show.summary.isNullOrEmpty()) {
+                    stringResource(R.string.unknown_summary)
+                } else {
+                    show.summary.trim()
+                }
             )
         }
         item {
@@ -105,7 +109,7 @@ fun ShowDetailsScreen(
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier
-                    .padding(start = 16.dp, top = 10.dp)
+                    .padding(start = 16.dp, top = 6.dp)
                     .fillMaxWidth(),
                 color = Color.Black,
             )

@@ -34,11 +34,11 @@ fun EpisodeDetailsScreen(
         state = scrollState
     ) {
         item {
-            val imageUrl =
-                episode.image?.original ?: episode.image?.medium //TODO make a separate method
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
-                    .data(imageUrl)
+                    .data(episode.image?.original)
+                    .error(R.drawable.show_avatar)
+                    .placeholder(R.drawable.show_avatar)
                     .size(Size.ORIGINAL)
                     .build(),
                 contentScale = ContentScale.Crop,
@@ -70,7 +70,11 @@ fun EpisodeDetailsScreen(
         item {
             SubtopicView(
                 title = stringResource(R.string.summary),
-                content = episode.summary ?: stringResource(R.string.unknown_summary)
+                content = if (episode.summary.isNullOrEmpty()) {
+                    stringResource(R.string.unknown_summary)
+                } else {
+                    episode.summary.trim()
+                }
             )
         }
     }
