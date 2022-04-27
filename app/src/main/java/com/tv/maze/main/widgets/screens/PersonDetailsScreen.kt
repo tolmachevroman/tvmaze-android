@@ -37,7 +37,7 @@ fun PersonDetailsScreen(
         state = scrollState
     ) {
         item {
-            val placeholder = if (person.gender.lowercase() == "female") {
+            val placeholder = if (person.gender?.lowercase() == "female") {
                 R.drawable.female_avatar
             } else {
                 R.drawable.male_avatar

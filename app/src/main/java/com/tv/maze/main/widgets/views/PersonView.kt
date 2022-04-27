@@ -35,7 +35,7 @@ fun PersonView(
                 .fillMaxWidth()
                 .height(IntrinsicSize.Min)
         ) {
-            val placeholder = if (person.gender.lowercase() == "female") {
+            val placeholder = if (person.gender?.lowercase() == "female") {
                 R.drawable.female_avatar
             } else {
                 R.drawable.male_avatar
