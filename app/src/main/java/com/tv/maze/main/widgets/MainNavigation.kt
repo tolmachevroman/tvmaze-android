@@ -41,6 +41,7 @@ fun MainNavigation(
         ) {
             ShowListScreen(
                 shows = viewModel.shows,
+                favoriteShows = viewModel.favoriteShows,
                 people = viewModel.people,
                 onQueryChange = { newQuery ->
                     viewModel.onQueryChange(newQuery)

@@ -24,6 +24,7 @@ class MainViewModel @Inject constructor(
 ) : ViewModel() {
 
     var shows by mutableStateOf<Resource<List<Show>>>(Resource.loading(null))
+    var favoriteShows by mutableStateOf<Resource<List<Show>>>(Resource.loading(null))
     var seasonsByShow by mutableStateOf<Resource<ArrayList<Season>>>(Resource.loading(null))
     var people by mutableStateOf<Resource<List<Person>>>(Resource.loading(null))
 

@@ -12,6 +12,7 @@ import androidx.compose.material.icons.rounded.Clear
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -24,6 +25,10 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.HorizontalPager
+import com.google.accompanist.pager.pagerTabIndicatorOffset
+import com.google.accompanist.pager.rememberPagerState
 import com.tv.maze.R
 import com.tv.maze.data.models.Person
 import com.tv.maze.data.models.Show
@@ -36,9 +41,75 @@ import com.tv.maze.utils.DataMocks
 import com.tv.maze.utils.Resource
 import com.tv.maze.utils.Status
 
-@OptIn(ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalComposeUiApi::class, ExperimentalPagerApi::class)
 @Composable
 fun ShowListScreen(
+    shows: Resource<List<Show>>,
+    favoriteShows: Resource<List<Show>>,
+    people: Resource<List<Person>>,
+    onQueryChange: (String) -> Unit,
+    onShowClick: (Show) -> Unit,
+    onPersonClick: (Person) -> Unit
+) {
+    val pagerState = rememberPagerState()
+    val coroutineScope = rememberCoroutineScope()
+    val pages = arrayListOf("All Shows", "Favorites")
+
+    Column {
+        TabRow(
+            // Our selected tab is our current page
+            selectedTabIndex = pagerState.currentPage,
+            // Override the indicator, using the provided pagerTabIndicatorOffset modifier
+            indicator = { tabPositions ->
+                TabRowDefaults.Indicator(
+                    Modifier.pagerTabIndicatorOffset(pagerState, tabPositions)
+                )
+            }
+        ) {
+            // Add tabs for all of our pages
+            pages.forEachIndexed { index, title ->
+                Tab(
+                    text = {
+                        Text(
+                            text = title,
+                            fontSize = 18.sp,
+                        )
+                    },
+                    selected = pagerState.currentPage == index,
+                    onClick = {
+                        //TODO fix crash
+//                        coroutineScope.launch {
+//                            try {
+//                                pagerState.animateScrollToPage(index)
+//                            } catch (e: Exception) {
+//
+//                            }
+//                        }
+                    },
+                )
+            }
+        }
+
+        HorizontalPager(
+            count = pages.size,
+            state = pagerState,
+            modifier = Modifier.weight(1f)
+        ) { page ->
+            when (page) {
+                0 -> {
+                    AllShowsTab(shows, people, onQueryChange, onShowClick, onPersonClick)
+                }
+                else -> {
+                    FavoritesTab(favoriteShows, onShowClick)
+                }
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+fun AllShowsTab(
     shows: Resource<List<Show>>,
     people: Resource<List<Person>>,
     onQueryChange: (String) -> Unit,
@@ -51,7 +122,10 @@ fun ShowListScreen(
 
     Column(
         modifier = Modifier
-            .fillMaxSize(),
+            .fillMaxSize()
+            .background(color = Color.White),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
         TextField(
@@ -154,6 +228,41 @@ fun ShowListScreen(
 }
 
 @Composable
+fun FavoritesTab(
+    favoriteShows: Resource<List<Show>>,
+    onShowClick: (Show) -> Unit,
+) {
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(color = Color.White),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        when (favoriteShows.status) {
+            Status.LOADING -> {
+                item { LoadingView() }
+            }
+            Status.SUCCESS -> {
+                favoriteShows.data?.forEach { show ->
+                    item {
+                        ShowView(
+                            show = show,
+                            onShowClick = {
+                                onShowClick(show)
+                            }
+                        )
+                    }
+                }
+            }
+            Status.ERROR -> {
+                item { ErrorView(favoriteShows.message) }
+            }
+        }
+    }
+}
+
+@Composable
 fun HeaderView(title: String) {
     Box(
         modifier = Modifier
@@ -179,9 +288,11 @@ fun ShowListScreenPreview() {
         val people = Resource.success(arrayListOf(DataMocks.person))
         ShowListScreen(
             shows = shows,
+            favoriteShows = shows,
             people = people,
             onQueryChange = { },
             onShowClick = {},
-            onPersonClick = {})
+            onPersonClick = {}
+        )
     }
 }
