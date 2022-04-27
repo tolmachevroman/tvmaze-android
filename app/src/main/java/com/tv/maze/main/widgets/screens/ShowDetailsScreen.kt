@@ -125,6 +125,7 @@ fun ShowDetailsScreen(
                 seasonsByShow.data?.forEach { season ->
                     item { SeasonView(season, onEpisodeClick) }
                 }
+                item { Spacer(modifier = Modifier.height(16.dp)) }
             }
             Status.ERROR -> {
                 item { ErrorView(seasonsByShow.message) }
