@@ -28,19 +28,21 @@ class MainViewModel @Inject constructor(
     var people by mutableStateOf<Resource<List<Person>>>(Resource.loading(null))
 
     //TODO implement in repository
-    private val cachedShows = mutableListOf<Show>()
+//    private val cachedShows = mutableListOf<Show>()
 
     fun getAllShows() {
         viewModelScope.launch {
             //TODO implement pagination
-            tvMazeRepository.getShows(1).let { response ->
-                shows = if (response.isSuccessful) {
-                    cachedShows.addAll(response.body()!!)
+            tvMazeRepository.getShows(0).let { result ->
+                shows = result
 
-                    Resource.success(response.body())
-                } else {
-                    Resource.error(response.message(), null)
-                }
+//                shows = if (response.isSuccessful) {
+//                    cachedShows.addAll(response.body()!!)
+//
+//                    Resource.success(response.body())
+//                } else {
+//                    Resource.error(response.message(), null)
+//                }
             }
         }
     }
@@ -67,7 +69,7 @@ class MainViewModel @Inject constructor(
 
     fun onQueryChange(query: String) {
         if (query.isEmpty()) {
-            shows = Resource.success(cachedShows)
+//            shows = Resource.success(cachedShows)
         } else {
             // Search shows
             shows = Resource.loading(null)

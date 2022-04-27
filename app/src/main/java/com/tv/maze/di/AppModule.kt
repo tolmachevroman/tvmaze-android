@@ -16,6 +16,10 @@ object AppModule {
 
     @Singleton
     @Provides
+    fun provideContext(@ApplicationContext context: Context): Context = context
+
+    @Singleton
+    @Provides
     fun provideStringResources(@ApplicationContext context: Context): Resources = context.resources
 
     @Singleton

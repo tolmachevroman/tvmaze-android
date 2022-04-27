@@ -23,4 +23,7 @@
 
     <string name="search_icon_description">Search icon</string>
     <string name="clear_icon_description">Clear icon</string>
+
+    <string name="key_last_get_shows_timestamp">last_get_shows_timestamp</string>
+    <string name="key_last_get_shows_page">last_get_shows_page</string>
 </resources>
