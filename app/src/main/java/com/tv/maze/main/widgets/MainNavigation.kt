@@ -2,7 +2,6 @@ package com.tv.maze.main.widgets
 
 import android.net.Uri
 import androidx.compose.animation.*
-import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.navigation.navArgument
@@ -39,12 +38,6 @@ fun MainNavigation(
     AnimatedNavHost(navController, startDestination = Route.SHOW_LIST_SCREEN.value) {
         composable(
             Route.SHOW_LIST_SCREEN.value,
-            enterTransition = {
-                routeEnterTransition()
-            },
-            exitTransition = {
-                routeExitTransition()
-            }
         ) {
             ShowListScreen(
                 shows = viewModel.shows,
@@ -71,12 +64,6 @@ fun MainNavigation(
         composable(
             Route.SHOW_DETAILS_SCREEN.value,
             arguments = listOf(navArgument("show") { type = ShowType() }),
-            enterTransition = {
-                routeEnterTransition()
-            },
-            exitTransition = {
-                routeExitTransition()
-            }
         ) { backStackEntry ->
             backStackEntry.arguments?.getParcelable<Show>("show")?.let { show ->
                 ShowDetailsScreen(
@@ -97,12 +84,6 @@ fun MainNavigation(
         composable(
             Route.EPISODE_DETAILS_SCREEN.value,
             arguments = listOf(navArgument("episode") { type = EpisodeType() }),
-            enterTransition = {
-                routeEnterTransition()
-            },
-            exitTransition = {
-                routeExitTransition()
-            }
         ) { backStackEntry ->
             backStackEntry.arguments?.getParcelable<Episode>("episode")?.let { episode ->
                 EpisodeDetailsScreen(episode)
@@ -111,12 +92,6 @@ fun MainNavigation(
         composable(
             Route.PERSON_DETAILS_SCREEN.value,
             arguments = listOf(navArgument("person") { type = PersonType() }),
-            enterTransition = {
-                routeEnterTransition()
-            },
-            exitTransition = {
-                routeExitTransition()
-            }
         ) { backStackEntry ->
             backStackEntry.arguments?.getParcelable<Person>("person")?.let { person ->
                 PersonDetailsScreen(person)
@@ -124,9 +99,3 @@ fun MainNavigation(
         }
     }
 }
-
-private fun routeEnterTransition(): EnterTransition =
-    slideInHorizontally(initialOffsetX = { 1000 }, animationSpec = tween(500))
-
-private fun routeExitTransition(): ExitTransition =
-    slideOutHorizontally(targetOffsetX = { -1000 }, animationSpec = tween(500))
