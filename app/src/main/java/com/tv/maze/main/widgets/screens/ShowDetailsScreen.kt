@@ -1,4 +1,4 @@
-package com.tv.maze.main.widgets
+package com.tv.maze.main.widgets.screens
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -26,6 +26,9 @@ import com.tv.maze.R
 import com.tv.maze.data.models.Episode
 import com.tv.maze.data.models.Season
 import com.tv.maze.data.models.Show
+import com.tv.maze.main.widgets.views.ErrorView
+import com.tv.maze.main.widgets.views.LoadingView
+import com.tv.maze.main.widgets.views.SubtopicView
 import com.tv.maze.ui.theme.TVmazeTheme
 import com.tv.maze.utils.Resource
 import com.tv.maze.utils.Status

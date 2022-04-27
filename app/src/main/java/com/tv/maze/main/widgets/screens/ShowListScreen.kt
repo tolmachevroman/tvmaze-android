@@ -1,4 +1,4 @@
-package com.tv.maze.main.widgets
+package com.tv.maze.main.widgets.screens
 
 import android.view.MotionEvent
 import androidx.compose.foundation.background
@@ -25,6 +25,10 @@ import androidx.compose.ui.unit.sp
 import com.tv.maze.R
 import com.tv.maze.data.models.Person
 import com.tv.maze.data.models.Show
+import com.tv.maze.main.widgets.views.ErrorView
+import com.tv.maze.main.widgets.views.LoadingView
+import com.tv.maze.main.widgets.views.PersonView
+import com.tv.maze.main.widgets.views.ShowView
 import com.tv.maze.utils.Resource
 import com.tv.maze.utils.Status
 

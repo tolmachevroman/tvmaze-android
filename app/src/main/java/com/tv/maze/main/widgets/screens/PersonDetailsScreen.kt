@@ -1,4 +1,4 @@
-package com.tv.maze.main.widgets
+package com.tv.maze.main.widgets.screens
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,12 +16,13 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import coil.size.Size
 import com.tv.maze.R
-import com.tv.maze.data.models.Episode
+import com.tv.maze.data.models.Person
+import com.tv.maze.main.widgets.views.SubtopicView
 import kotlin.math.min
 
 @Composable
-fun EpisodeDetailsScreen(
-    episode: Episode
+fun PersonDetailsScreen(
+    person: Person
 ) {
     val scrollState = rememberLazyListState()
     var scrolledY = 0f
@@ -34,7 +35,7 @@ fun EpisodeDetailsScreen(
     ) {
         item {
             val imageUrl =
-                episode.image?.original ?: episode.image?.medium //TODO make a separate method
+                person.image?.original ?: person.image?.medium //TODO make a separate method
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(imageUrl)
@@ -53,24 +54,7 @@ fun EpisodeDetailsScreen(
                     }
             )
         }
-        item { SubtopicView(title = stringResource(R.string.name), content = episode.name) }
-        item {
-            SubtopicView(
-                title = stringResource(R.string.number),
-                content = "${episode.number}"
-            )
-        }
-        item {
-            SubtopicView(
-                title = stringResource(R.string.season),
-                content = "${episode.season}"
-            )
-        }
-        item {
-            SubtopicView(
-                title = stringResource(R.string.summary),
-                content = episode.summary ?: stringResource(R.string.unknown_summary)
-            )
-        }
+        item { SubtopicView(title = stringResource(R.string.name), content = person.name) }
+        //TODO Series they have participated in, with a link to the series details.
     }
 }
