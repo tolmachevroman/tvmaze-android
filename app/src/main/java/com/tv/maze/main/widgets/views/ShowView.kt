@@ -2,6 +2,7 @@ package com.tv.maze.main.widgets.views
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -22,32 +23,47 @@ fun ShowView(
     show: Show,
     onShowClick: (Show) -> Unit
 ) {
-    Row(
+    Column(
         modifier = Modifier
-            .fillMaxWidth()
             .wrapContentHeight()
             .clickable {
                 onShowClick(show)
-            }
-    ) {
-        val imageUrl =
-            show.image?.original ?: show.image?.medium
-        AsyncImage(
-            model = ImageRequest.Builder(LocalContext.current)
-                .data(imageUrl)
-                .size(Size.ORIGINAL)
-                .build(),
-            contentScale = ContentScale.Crop,
-            contentDescription = null,
-            modifier = Modifier.size(120.dp)
-        )
-        Text(
-            text = show.name,
-            fontSize = 18.sp,
+            }) {
+        Row(
             modifier = Modifier
-                .padding(start = 16.dp)
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .height(IntrinsicSize.Min)
+        ) {
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(show.image?.medium)
+                    .size(Size.ORIGINAL)
+                    .build(),
+                contentScale = ContentScale.Crop,
+                contentDescription = null,
+                modifier = Modifier.size(140.dp)
+            )
+            Divider(
+                color = Color.Black,
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .width(1.dp)
+            )
+            Text(
+                text = show.name,
+                fontSize = 20.sp,
+                modifier = Modifier
+                    .padding(start = 16.dp, top = 4.dp)
+                    .fillMaxWidth(),
+                color = Color.Black,
+            )
+        }
+
+        Divider(
             color = Color.Black,
+            modifier = Modifier
+                .fillMaxWidth()
+                .width(1.dp)
         )
     }
 }

@@ -19,6 +19,7 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -107,20 +108,7 @@ fun ShowListScreen(
 
                     if (query.isNotEmpty()) {
                         item {
-                            Box(
-                                modifier = Modifier
-                                    .padding(vertical = 2.dp)
-                                    .fillMaxWidth()
-                                    .background(color = Color.LightGray),
-                            ) {
-                                Text(
-                                    text = stringResource(R.string.shows_found),
-                                    fontSize = 18.sp,
-                                    modifier = Modifier
-                                        .padding(horizontal = 16.dp, vertical = 10.dp),
-                                    color = Color.Black,
-                                )
-                            }
+                            HeaderView(title = stringResource(R.string.shows_found))
                         }
                     }
 
@@ -138,20 +126,7 @@ fun ShowListScreen(
 
                     if (query.isNotEmpty()) {
                         item {
-                            Box(
-                                modifier = Modifier
-                                    .padding(vertical = 2.dp)
-                                    .fillMaxWidth()
-                                    .background(color = Color.LightGray),
-                            ) {
-                                Text(
-                                    text = stringResource(R.string.people_found),
-                                    fontSize = 18.sp,
-                                    modifier = Modifier
-                                        .padding(horizontal = 16.dp, vertical = 10.dp),
-                                    color = Color.Black,
-                                )
-                            }
+                            HeaderView(title = stringResource(R.string.people_found))
                         }
 
                         people.data?.forEach { person ->
@@ -173,5 +148,22 @@ fun ShowListScreen(
             }
         }
     }
+}
 
+@Composable
+fun HeaderView(title: String) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(color = Color.LightGray),
+    ) {
+        Text(
+            text = title,
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier
+                .padding(horizontal = 16.dp, vertical = 20.dp),
+            color = Color.Black,
+        )
+    }
 }

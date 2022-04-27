@@ -7,5 +7,6 @@ import kotlinx.parcelize.Parcelize
 data class Person(
     val id: Int,
     val name: String,
+    val gender: String,
     val image: Poster?
 ) : Parcelable
