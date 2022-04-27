@@ -12,6 +12,9 @@
     <string name="season_number">Season %1$d:</string>
     <string name="schedule">%1$s at %2$s</string>
 
+    <string name="shows_found">Shows found:</string>
+    <string name="people_found">People found:</string>
+
     <string name="unknown_schedule">Unknown schedule</string>
     <string name="unknown_genres">Unknown genres</string>
     <string name="unknown_summary">Unknown summary</string>

@@ -8,6 +8,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tv.maze.data.TVMazeRepository
+import com.tv.maze.data.models.Person
 import com.tv.maze.data.models.Season
 import com.tv.maze.data.models.Show
 import com.tv.maze.utils.Resource
@@ -24,6 +25,7 @@ class MainViewModel @Inject constructor(
 
     var shows by mutableStateOf<Resource<List<Show>>>(Resource.loading(null))
     var seasonsByShow by mutableStateOf<Resource<ArrayList<Season>>>(Resource.loading(null))
+    var people by mutableStateOf<Resource<List<Person>>>(Resource.loading(null))
 
     //TODO implement in repository
     private val cachedShows = mutableListOf<Show>()
@@ -81,10 +83,14 @@ class MainViewModel @Inject constructor(
             }
 
             // Search people
+            people = Resource.loading(null)
             viewModelScope.launch {
                 tvMazeRepository.searchPeople(query).let { response ->
-                    if (response.isSuccessful) {
-                        println("Found ${response.body()?.size} people")
+                    val peopleFound = response.body()
+                    people = if (response.isSuccessful && peopleFound != null) {
+                        Resource.success(peopleFound.map { it.person })
+                    } else {
+                        Resource.error(response.message(), null)
                     }
 
                 }

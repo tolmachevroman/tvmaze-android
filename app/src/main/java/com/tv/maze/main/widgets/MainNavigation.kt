@@ -43,6 +43,7 @@ fun MainNavigation(
         ) {
             ShowListScreen(
                 shows = viewModel.shows,
+                people = viewModel.people,
                 onQueryChange = { newQuery ->
                     viewModel.onQueryChange(newQuery)
                 },
@@ -50,6 +51,11 @@ fun MainNavigation(
                     viewModel.getSeasonsByShow(show.id)
                     val json = Uri.encode(Gson().toJson(show))
                     navController.navigate(Route.SHOW_DETAILS_SCREEN.value.replace("{show}", json))
+                },
+                onPersonClick = { person ->
+                    //TODO pass Person and open PersonDetailsScreen
+//                    val json = Uri.encode(Gson().toJson(show))
+//                    navController.navigate(Route.SHOW_DETAILS_SCREEN.value.replace("{show}", json))
                 }
             )
         }
