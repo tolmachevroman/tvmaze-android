@@ -18,6 +18,8 @@ import coil.size.Size
 import com.tv.maze.data.models.Show
 import com.tv.maze.ui.theme.TVmazeTheme
 import com.tv.maze.R
+import com.tv.maze.data.models.Poster
+import com.tv.maze.data.models.Schedule
 
 @Composable
 fun ShowView(
@@ -40,6 +42,7 @@ fun ShowView(
                     .data(show.image?.medium)
                     .size(Size.ORIGINAL)
                     .error(R.drawable.show_avatar)
+                    .placeholder(R.drawable.show_avatar)
                     .build(),
                 contentScale = ContentScale.Crop,
                 contentDescription = null,
@@ -55,7 +58,7 @@ fun ShowView(
                 text = show.name,
                 fontSize = 20.sp,
                 modifier = Modifier
-                    .padding(start = 16.dp, top = 4.dp)
+                    .padding(start = 16.dp, top = 6.dp)
                     .fillMaxWidth(),
                 color = Color.Black,
             )
@@ -74,12 +77,17 @@ fun ShowView(
 @Composable
 fun ShowViewPreview() {
     TVmazeTheme {
-        // TODO
-//        ShowView(
-//            id = 1,
-//            posterUrl = "https://as01.epimg.net/epik/imagenes/2018/03/13/portada/1520946522_348122_1520949182_noticia_normal.jpg",
-//            name = "Black Mirror",
-//            onShowClick = {  }
-//        )
+        val show = Show(
+            id = 1,
+            name = "Black Mirror",
+            genres = arrayListOf("Sci-Fi", "Drama", "Thriller"),
+            image = Poster(
+                medium = "https://as01.epimg.net/epik/imagenes/2018/03/13/portada/1520946522_348122_1520949182_noticia_normal.jpg",
+                original = null
+            ),
+            summary = "In an abstrusely dystopian future, several individuals grapple with the manipulative effects of cutting edge technology in their personal lives and behaviours.",
+            schedule = Schedule(time = "22:00", days = arrayListOf("Wednesday", "Friday"))
+        )
+        ShowView(show = show, onShowClick = { })
     }
 }
