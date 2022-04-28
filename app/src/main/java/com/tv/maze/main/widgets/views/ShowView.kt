@@ -1,14 +1,11 @@
 package com.tv.maze.main.widgets.views
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -19,7 +16,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import coil.size.Size
 import com.tv.maze.R
 import com.tv.maze.data.models.Show
 import com.tv.maze.ui.theme.TVmazeTheme
@@ -41,8 +37,7 @@ fun ShowView(
 
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
-                .data(show.image?.medium)
-                .size(Size.ORIGINAL)
+                .data(show.image?.original)
                 .error(R.drawable.show_avatar)
                 .placeholder(R.drawable.show_avatar)
                 .build(),
