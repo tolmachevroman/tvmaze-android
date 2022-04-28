@@ -8,5 +8,6 @@ data class Person(
     val id: Int,
     val name: String,
     val gender: String?,
-    val image: Poster?
+    val image: Poster?,
+    val _embedded: CastCreditsWrapped? = null
 ) : Parcelable

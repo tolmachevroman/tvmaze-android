@@ -103,6 +103,7 @@ fun MainNavigation(
             arguments = listOf(navArgument("person") { type = PersonType() }),
         ) { backStackEntry ->
             backStackEntry.arguments?.getParcelable<Person>("person")?.let { person ->
+                viewModel.getPerson(person.id)
                 PersonDetailsScreen(person)
             }
         }

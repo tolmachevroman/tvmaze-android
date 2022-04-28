@@ -25,4 +25,10 @@ interface TVMazeApiService {
 
     @GET("seasons/{seasonId}/episodes")
     suspend fun getEpisodesBySeason(@Path("seasonId") seasonId: Int): Response<ArrayList<Episode>>
+
+    @GET("people/{personId}")
+    suspend fun getPerson(
+        @Path("personId") personId: Int,
+        @Query("embed") embed: String
+    ): Response<Person>
 }

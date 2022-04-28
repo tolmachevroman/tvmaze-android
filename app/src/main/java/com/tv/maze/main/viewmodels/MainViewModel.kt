@@ -196,4 +196,18 @@ class MainViewModel @Inject constructor(
             }
         }
     }
+
+    fun getPerson(personId: Int) {
+        viewModelScope.launch {
+            tvMazeRepository.getPerson(personId).let { response ->
+                if (response.isSuccessful) {
+                    val person = response.body()
+                    println("Participated in: ")
+                    person?._embedded?.castcredits?.forEach { castCredits ->
+                        println(castCredits._links.show.href)
+                    }
+                }
+            }
+        }
+    }
 }

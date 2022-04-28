@@ -26,4 +26,6 @@ class TVMazeApiImpl @Inject constructor(
     override suspend fun getEpisodesBySeason(seasonId: Int): Response<ArrayList<Episode>> =
         apiService.getEpisodesBySeason(seasonId)
 
+    override suspend fun getPerson(personId: Int): Response<Person> =
+        apiService.getPerson(personId, "castcredits")
 }
