@@ -5,6 +5,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -173,12 +175,14 @@ fun AllShowsTab(
                 LoadingView()
             }
             Status.SUCCESS -> {
-                LazyColumn(modifier = Modifier.pointerInteropFilter {
-                    if (it.action == MotionEvent.ACTION_DOWN) {
-                        keyboardController?.hide()
-                        false
-                    } else true
-                }) {
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(2),
+                    modifier = Modifier.pointerInteropFilter {
+                        if (it.action == MotionEvent.ACTION_DOWN) {
+                            keyboardController?.hide()
+                            false
+                        } else true
+                    }) {
 
                     if (query.isNotEmpty()) {
                         item {
@@ -236,7 +240,9 @@ fun FavoritesTab(
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        LazyColumn {
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(2)
+        ) {
             when (favoriteShows.status) {
                 Status.LOADING -> {
                     item { LoadingView() }
