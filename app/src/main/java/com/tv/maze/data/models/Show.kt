@@ -6,6 +6,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class Show(
     val id: Int,
+    val url: String?,
     val name: String,
     val genres: ArrayList<String>,
     val image: Poster?,

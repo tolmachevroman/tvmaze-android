@@ -105,6 +105,7 @@ class DataMocks {
 
         val show = Show(
             id = 1,
+            url = "",
             name = "Black Mirror",
             genres = arrayListOf("Sci-Fi", "Drama", "Thriller"),
             image = Poster(

@@ -206,7 +206,7 @@ fun AllShowsTab(
 
                     if (query.isNotEmpty()) {
                         item(
-                            span = { GridItemSpan(maxCurrentLineSpan) }
+                            span = { GridItemSpan(maxLineSpan) }
                         ) {
                             HeaderView(title = stringResource(R.string.shows_found))
                         }
@@ -226,7 +226,7 @@ fun AllShowsTab(
 
                     if (query.isNotEmpty()) {
                         item(
-                            span = { GridItemSpan(maxCurrentLineSpan) }
+                            span = { GridItemSpan(maxLineSpan) }
                         ) {
                             HeaderView(title = stringResource(R.string.people_found))
                         }

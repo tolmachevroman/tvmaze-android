@@ -51,6 +51,7 @@ fun MainNavigation(
                     navController.navigate(Route.SHOW_DETAILS_SCREEN.value.replace("{show}", json))
                 },
                 onPersonClick = { person ->
+                    viewModel.getPerson(person.id)
                     val json = Uri.encode(Gson().toJson(person))
                     navController.navigate(
                         Route.PERSON_DETAILS_SCREEN.value.replace(
@@ -103,8 +104,11 @@ fun MainNavigation(
             arguments = listOf(navArgument("person") { type = PersonType() }),
         ) { backStackEntry ->
             backStackEntry.arguments?.getParcelable<Person>("person")?.let { person ->
-                viewModel.getPerson(person.id)
-                PersonDetailsScreen(person)
+                PersonDetailsScreen(
+                    navController = navController,
+                    person = person,
+                    showsPersonParticipatedIn = viewModel.showsPersonParticipatedIn
+                )
             }
         }
     }

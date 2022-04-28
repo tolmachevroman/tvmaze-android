@@ -30,6 +30,11 @@ class MainViewModel @Inject constructor(
     var favoriteShows by mutableStateOf<Resource<ArrayList<Show>>>(Resource.loading(null))
     var seasonsByShow by mutableStateOf<Resource<ArrayList<Season>>>(Resource.loading(null))
     var people by mutableStateOf<Resource<ArrayList<Person>>>(Resource.loading(null))
+    var showsPersonParticipatedIn by mutableStateOf<Resource<ArrayList<Show>>>(
+        Resource.loading(
+            null
+        )
+    )
 
     private val favoriteShowsIds = mutableListOf<Int>()
 
@@ -198,14 +203,27 @@ class MainViewModel @Inject constructor(
     }
 
     fun getPerson(personId: Int) {
+        showsPersonParticipatedIn = Resource.loading(null)
         viewModelScope.launch {
             tvMazeRepository.getPerson(personId).let { response ->
-                if (response.isSuccessful) {
-                    val person = response.body()
-                    println("Participated in: ")
-                    person?._embedded?.castcredits?.forEach { castCredits ->
-                        println(castCredits._links.show.href)
+                val showIds =
+                    response.body()?._embedded?.castcredits?.map { it._links.show.href }?.map {
+                        it.split("/").last()
                     }
+
+                showsPersonParticipatedIn = if (response.isSuccessful) {
+                    val data: ArrayList<Show> = arrayListOf()
+
+                    showIds?.forEach { showId ->
+                        tvMazeRepository.getShow(showId.toInt()).let { result ->
+                            result.takeIf { it.isSuccessful }?.body()
+                                ?.let { show -> data.add(show) }
+                        }
+                    }
+
+                    Resource.success(data)
+                } else {
+                    Resource.error(response.message(), null)
                 }
             }
         }
