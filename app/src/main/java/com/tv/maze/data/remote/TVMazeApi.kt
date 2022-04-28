@@ -11,6 +11,8 @@ interface TVMazeApi {
 
     suspend fun getShows(page: Int): Response<ArrayList<Show>>
 
+    suspend fun getShow(showId: Int): Response<Show>
+
     suspend fun getSeasonsByShow(showId: Int): Response<ArrayList<Season>>
 
     suspend fun getEpisodesBySeason(seasonId: Int): Response<ArrayList<Episode>>

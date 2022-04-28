@@ -45,7 +45,7 @@ import kotlin.math.min
 @Composable
 fun ShowDetailsScreen(
     show: Show,
-    isFavorite: Boolean = false,
+    isFavorite: Boolean,
     seasonsByShow: Resource<ArrayList<Season>>,
     onEpisodeClick: (Episode) -> Unit,
     onFavoriteClick: (Int, Boolean) -> Unit

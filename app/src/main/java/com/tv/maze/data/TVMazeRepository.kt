@@ -81,6 +81,8 @@ class TVMazeRepository @Inject constructor(
         return result
     }
 
+    suspend fun getShow(showId: Int) = tvMazeApiImpl.getShow(showId)
+
     suspend fun getSeasonsByShow(showId: Int) = tvMazeApiImpl.getSeasonsByShow(showId)
 
     suspend fun getEpisodesBySeason(seasonId: Int) = tvMazeApiImpl.getEpisodesBySeason(seasonId)

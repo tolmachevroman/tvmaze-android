@@ -17,6 +17,9 @@ class TVMazeApiImpl @Inject constructor(
     override suspend fun getShows(page: Int): Response<ArrayList<Show>> =
         apiService.getShows(page)
 
+    override suspend fun getShow(showId: Int): Response<Show> =
+        apiService.getShow(showId)
+
     override suspend fun getSeasonsByShow(showId: Int): Response<ArrayList<Season>> =
         apiService.getSeasonsByShow(showId)
 

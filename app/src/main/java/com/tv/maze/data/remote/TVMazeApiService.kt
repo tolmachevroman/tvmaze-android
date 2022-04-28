@@ -17,6 +17,9 @@ interface TVMazeApiService {
     @GET("shows")
     suspend fun getShows(@Query("page") page: Int): Response<ArrayList<Show>>
 
+    @GET("shows/{showId}")
+    suspend fun getShow(@Path("showId") showId: Int): Response<Show>
+
     @GET("shows/{showId}/seasons")
     suspend fun getSeasonsByShow(@Path("showId") showId: Int): Response<ArrayList<Season>>
 

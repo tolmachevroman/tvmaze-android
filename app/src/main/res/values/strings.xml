@@ -26,7 +26,9 @@
 
     <string name="add_to_favorites">Add to favorites</string>
     <string name="remove_from_favorites">Remove from favorites</string>
+    <string name="no_favorite_shows_yet">No favorite shows yet</string>
 
     <string name="key_last_get_shows_timestamp">last_get_shows_timestamp</string>
     <string name="key_last_get_shows_page">last_get_shows_page</string>
+    <string name="key_favorite_shows">favorite_shows</string>
 </resources>

@@ -124,7 +124,7 @@ fun AllShowsTab(
         modifier = Modifier
             .fillMaxSize()
             .background(color = Color.White),
-        verticalArrangement = Arrangement.Center,
+        verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
@@ -232,34 +232,37 @@ fun FavoritesTab(
     favoriteShows: Resource<List<Show>>,
     onShowClick: (Show) -> Unit,
 ) {
-    LazyColumn(
+    Column(
         modifier = Modifier
             .fillMaxSize()
             .background(color = Color.White),
-        verticalArrangement = Arrangement.Center,
+        verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        when (favoriteShows.status) {
-            Status.LOADING -> {
-                item { LoadingView() }
-            }
-            Status.SUCCESS -> {
-                favoriteShows.data?.forEach { show ->
-                    item {
-                        ShowView(
-                            show = show,
-                            onShowClick = {
-                                onShowClick(show)
-                            }
-                        )
+        LazyColumn {
+            when (favoriteShows.status) {
+                Status.LOADING -> {
+                    item { LoadingView() }
+                }
+                Status.SUCCESS -> {
+                    favoriteShows.data?.forEach { show ->
+                        item {
+                            ShowView(
+                                show = show,
+                                onShowClick = {
+                                    onShowClick(show)
+                                }
+                            )
+                        }
                     }
                 }
-            }
-            Status.ERROR -> {
-                item { ErrorView(favoriteShows.message) }
+                Status.ERROR -> {
+                    item { ErrorView(favoriteShows.message) }
+                }
             }
         }
     }
+
 }
 
 @Composable

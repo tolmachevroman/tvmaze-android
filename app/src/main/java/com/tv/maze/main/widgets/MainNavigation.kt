@@ -25,7 +25,6 @@ enum class Route(val value: String) {
     SHOW_LIST_SCREEN("shows"),
     SHOW_DETAILS_SCREEN("shows/{show}"),
     EPISODE_DETAILS_SCREEN("episodes/{episode}"),
-    FAVORITE_SHOWS_SCREEN("shows/favorite"),
     PERSON_DETAILS_SCREEN("people/{person}")
 }
 
@@ -69,6 +68,7 @@ fun MainNavigation(
             backStackEntry.arguments?.getParcelable<Show>("show")?.let { show ->
                 ShowDetailsScreen(
                     show = show,
+                    isFavorite = viewModel.isShowFavorite(showId = show.id),
                     seasonsByShow = viewModel.seasonsByShow,
                     onEpisodeClick = { episode ->
                         val json = Uri.encode(Gson().toJson(episode))

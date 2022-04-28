@@ -7,12 +7,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.tv.maze.R
 import com.tv.maze.data.TVMazeRepository
 import com.tv.maze.data.models.Person
 import com.tv.maze.data.models.Season
 import com.tv.maze.data.models.Show
 import com.tv.maze.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -23,19 +25,39 @@ class MainViewModel @Inject constructor(
     private val tvMazeRepository: TVMazeRepository
 ) : ViewModel() {
 
-    var shows by mutableStateOf<Resource<List<Show>>>(Resource.loading(null))
-    var favoriteShows by mutableStateOf<Resource<List<Show>>>(Resource.loading(null))
+    var shows by mutableStateOf<Resource<ArrayList<Show>>>(Resource.loading(null))
+    var favoriteShows by mutableStateOf<Resource<ArrayList<Show>>>(Resource.loading(null))
     var seasonsByShow by mutableStateOf<Resource<ArrayList<Season>>>(Resource.loading(null))
-    var people by mutableStateOf<Resource<List<Person>>>(Resource.loading(null))
+    var people by mutableStateOf<Resource<ArrayList<Person>>>(Resource.loading(null))
+
+    private val favoriteShowsIds = mutableListOf<Int>()
 
     //TODO implement pagination
     private var currentPage = 0
+
+    init {
+        getFavoriteShows()
+    }
 
     fun getAllShows() {
         viewModelScope.launch {
             tvMazeRepository.getShows(currentPage).let { result ->
                 shows = result
             }
+        }
+    }
+
+    private fun getShowsAndAddToFavorites(showIds: List<Int>) {
+        viewModelScope.launch {
+            val data: ArrayList<Show> = arrayListOf()
+            favoriteShows.data?.let { data.addAll(it) }
+
+            showIds.forEach { showId ->
+                tvMazeRepository.getShow(showId).let { result ->
+                    result.takeIf { it.isSuccessful }?.body()?.let { show -> data.add(show) }
+                }
+            }
+            favoriteShows = Resource.success(data)
         }
     }
 
@@ -71,7 +93,9 @@ class MainViewModel @Inject constructor(
                 tvMazeRepository.searchShows(query).let { response ->
                     val showsFound = response.body()
                     shows = if (response.isSuccessful && showsFound != null) {
-                        Resource.success(showsFound.map { it.show })
+                        val data: ArrayList<Show> = arrayListOf()
+                        data.addAll(showsFound.map { it.show })
+                        Resource.success(data)
                     } else {
                         Resource.error(response.message(), null)
                     }
@@ -84,7 +108,9 @@ class MainViewModel @Inject constructor(
                 tvMazeRepository.searchPeople(query).let { response ->
                     val peopleFound = response.body()
                     people = if (response.isSuccessful && peopleFound != null) {
-                        Resource.success(peopleFound.map { it.person })
+                        val data: ArrayList<Person> = arrayListOf()
+                        data.addAll(peopleFound.map { it.person })
+                        Resource.success(data)
                     } else {
                         Resource.error(response.message(), null)
                     }
@@ -94,7 +120,62 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Read comma-separated Show ids from SharedPreferences, load them from the API
+     * and show in Favorites Tab
+     */
+    private fun getFavoriteShows() {
+        favoriteShows = Resource.loading(null)
+        viewModelScope.launch(Dispatchers.IO) {
+            val showsEncoded =
+                sharedPreferences.getString(resources.getString(R.string.key_favorite_shows), "")
+            if (showsEncoded.isNullOrEmpty()) {
+                favoriteShows = Resource.error(
+                    message = resources.getString(R.string.no_favorite_shows_yet),
+                    null
+                )
+            } else {
+                showsEncoded
+                    .split(",")
+                    .map { it.toInt() }
+                    .let {
+                        favoriteShowsIds.addAll(it)
+                        getShowsAndAddToFavorites(favoriteShowsIds)
+                    }
+            }
+        }
+    }
+
+    fun isShowFavorite(showId: Int): Boolean = favoriteShowsIds.contains(showId)
+
+    /**
+     * Add or remove Show by its id, and write comma-separated show ids to SharedPreferences
+     */
     fun setFavorite(showId: Int, isFavorite: Boolean) {
-        println("Setting $showId to favorite $isFavorite")
+        if (isFavorite) {
+            favoriteShowsIds.add(showId)
+            getShowsAndAddToFavorites(listOf(showId))
+        } else {
+            favoriteShowsIds.remove(showId)
+            favoriteShows.data?.removeAll { it.id == showId }
+
+            if (favoriteShowsIds.isEmpty()) {
+                favoriteShows = Resource.error(
+                    message = resources.getString(R.string.no_favorite_shows_yet),
+                    null
+                )
+            }
+        }
+        favoriteShowsIds.let {
+            viewModelScope.launch(Dispatchers.IO) {
+                with(sharedPreferences.edit()) {
+                    putString(
+                        resources.getString(R.string.key_favorite_shows),
+                        it.joinToString(separator = ",")
+                    )
+                    apply()
+                }
+            }
+        }
     }
 }
