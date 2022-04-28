@@ -1,4 +1,4 @@
-package com.tv.maze.main.widgets.views
+package com.tv.maze.ui.main.widgets.views
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -16,15 +16,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import coil.size.Size
 import com.tv.maze.R
-import com.tv.maze.data.models.Show
+import com.tv.maze.data.models.Person
 import com.tv.maze.ui.theme.TVmazeTheme
 import com.tv.maze.utils.DataMocks
 
 @Composable
-fun ShowView(
-    show: Show,
-    onShowClick: (Show) -> Unit
+fun PersonView(
+    person: Person,
+    onPersonClick: (Person) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -32,14 +33,20 @@ fun ShowView(
             .fillMaxWidth()
             .border(width = .5.dp, color = Color.Black)
             .clickable {
-                onShowClick(show)
+                onPersonClick(person)
             }) {
 
+        val placeholder = if (person.gender?.lowercase() == "female") {
+            R.drawable.female_avatar
+        } else {
+            R.drawable.male_avatar
+        }
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
-                .data(show.image?.original)
-                .error(R.drawable.show_avatar)
-                .placeholder(R.drawable.show_avatar)
+                .data(person.image?.medium)
+                .size(Size.ORIGINAL)
+                .error(placeholder)
+                .placeholder(placeholder)
                 .build(),
             contentScale = ContentScale.Crop,
             contentDescription = null,
@@ -49,7 +56,7 @@ fun ShowView(
         )
 
         Text(
-            text = show.name,
+            text = person.name,
             fontSize = 20.sp,
             fontWeight = FontWeight.Normal,
             modifier = Modifier
@@ -64,8 +71,8 @@ fun ShowView(
 
 @Preview(showBackground = true, heightDp = 250, widthDp = 200)
 @Composable
-fun ShowViewPreview() {
+fun PersonViewPreview() {
     TVmazeTheme {
-        ShowView(show = DataMocks.show, onShowClick = { })
+        PersonView(person = DataMocks.person, onPersonClick = { })
     }
 }

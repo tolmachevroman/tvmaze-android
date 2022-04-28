@@ -1,4 +1,4 @@
-package com.tv.maze.main.widgets
+package com.tv.maze.ui.main.widgets
 
 import android.net.Uri
 import androidx.compose.animation.*
@@ -15,11 +15,11 @@ import com.tv.maze.data.models.Show
 import com.tv.maze.data.models.navigation.EpisodeType
 import com.tv.maze.data.models.navigation.PersonType
 import com.tv.maze.data.models.navigation.ShowType
-import com.tv.maze.main.viewmodels.MainViewModel
-import com.tv.maze.main.widgets.screens.EpisodeDetailsScreen
-import com.tv.maze.main.widgets.screens.PersonDetailsScreen
-import com.tv.maze.main.widgets.screens.ShowDetailsScreen
-import com.tv.maze.main.widgets.screens.ShowListScreen
+import com.tv.maze.ui.main.viewmodels.MainViewModel
+import com.tv.maze.ui.main.widgets.screens.EpisodeDetailsScreen
+import com.tv.maze.ui.main.widgets.screens.PersonDetailsScreen
+import com.tv.maze.ui.main.widgets.screens.ShowDetailsScreen
+import com.tv.maze.ui.main.widgets.screens.ShowListScreen
 
 enum class Route(val value: String) {
     SHOW_LIST_SCREEN("shows"),

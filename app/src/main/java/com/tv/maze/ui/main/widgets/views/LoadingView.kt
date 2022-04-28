@@ -1,4 +1,4 @@
-package com.tv.maze.main.widgets.views
+package com.tv.maze.ui.main.widgets.views
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize

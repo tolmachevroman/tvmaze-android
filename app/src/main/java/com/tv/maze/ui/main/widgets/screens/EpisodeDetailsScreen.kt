@@ -1,4 +1,4 @@
-package com.tv.maze.main.widgets.screens
+package com.tv.maze.ui.main.widgets.screens
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -24,7 +24,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.tv.maze.R
 import com.tv.maze.data.models.Episode
-import com.tv.maze.main.widgets.views.SubtopicView
+import com.tv.maze.ui.main.widgets.views.SubtopicView
 import com.tv.maze.ui.theme.TVmazeTheme
 import com.tv.maze.utils.DataMocks
 import kotlin.math.min

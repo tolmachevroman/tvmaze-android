@@ -1,4 +1,4 @@
-package com.tv.maze.main.viewmodels
+package com.tv.maze.ui.main.viewmodels
 
 import android.content.SharedPreferences
 import android.content.res.Resources

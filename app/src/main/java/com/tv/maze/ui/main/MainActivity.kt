@@ -1,4 +1,4 @@
-package com.tv.maze.main
+package com.tv.maze.ui.main
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -8,8 +8,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
-import com.tv.maze.main.viewmodels.MainViewModel
-import com.tv.maze.main.widgets.MainNavigation
+import com.tv.maze.ui.main.viewmodels.MainViewModel
+import com.tv.maze.ui.main.widgets.MainNavigation
 import com.tv.maze.ui.theme.TVmazeTheme
 import dagger.hilt.android.AndroidEntryPoint
 

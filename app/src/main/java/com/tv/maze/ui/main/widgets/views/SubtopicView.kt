@@ -1,4 +1,4 @@
-package com.tv.maze.main.widgets.views
+package com.tv.maze.ui.main.widgets.views
 
 import android.text.Html
 import androidx.compose.foundation.layout.Column

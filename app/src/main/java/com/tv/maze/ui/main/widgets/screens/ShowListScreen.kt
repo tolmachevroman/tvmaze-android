@@ -1,4 +1,4 @@
-package com.tv.maze.main.widgets.screens
+package com.tv.maze.ui.main.widgets.screens
 
 import android.view.MotionEvent
 import androidx.compose.foundation.background
@@ -34,10 +34,10 @@ import com.google.accompanist.pager.rememberPagerState
 import com.tv.maze.R
 import com.tv.maze.data.models.Person
 import com.tv.maze.data.models.Show
-import com.tv.maze.main.widgets.views.ErrorView
-import com.tv.maze.main.widgets.views.LoadingView
-import com.tv.maze.main.widgets.views.PersonView
-import com.tv.maze.main.widgets.views.ShowView
+import com.tv.maze.ui.main.widgets.views.ErrorView
+import com.tv.maze.ui.main.widgets.views.LoadingView
+import com.tv.maze.ui.main.widgets.views.PersonView
+import com.tv.maze.ui.main.widgets.views.ShowView
 import com.tv.maze.ui.theme.TVmazeTheme
 import com.tv.maze.utils.DataMocks
 import com.tv.maze.utils.Resource
