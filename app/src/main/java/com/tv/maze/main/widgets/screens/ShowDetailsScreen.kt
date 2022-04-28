@@ -5,14 +5,12 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.text.ClickableText
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -27,6 +25,8 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.tv.maze.R
@@ -44,6 +44,7 @@ import kotlin.math.min
 
 @Composable
 fun ShowDetailsScreen(
+    navController: NavController,
     show: Show,
     isFavorite: Boolean,
     seasonsByShow: Resource<ArrayList<Season>>,
@@ -54,101 +55,125 @@ fun ShowDetailsScreen(
     var scrolledY = 0f
     var previousOffset = 0
 
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxSize(),
-        state = scrollState
-    ) {
-        item {
-            AsyncImage(
-                model = ImageRequest.Builder(LocalContext.current)
-                    .data(show.image?.original)
-                    .error(R.drawable.show_avatar)
-                    .placeholder(R.drawable.show_avatar)
-                    .build(),
-                contentScale = ContentScale.Crop,
-                contentDescription = null,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(320.dp)
-                    .graphicsLayer {
-                        scrolledY += scrollState.firstVisibleItemScrollOffset - previousOffset
-                        translationY = scrolledY * 0.5f
-                        previousOffset = scrollState.firstVisibleItemScrollOffset
-                        alpha = min(1f, 1 - (scrolledY / 800f))
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text(show.name) },
+                navigationIcon = if (navController.previousBackStackEntry != null) {
+                    {
+                        IconButton(onClick = { navController.navigateUp() }) {
+                            Icon(
+                                imageVector = Icons.Filled.ArrowBack,
+                                contentDescription = "Back"
+                            )
+                        }
                     }
+                } else {
+                    null
+                }
             )
         }
+    ) {
+        it.calculateBottomPadding()
 
-        item {
-            FavoriteView(
-                isFavorite = isFavorite,
-                showId = show.id,
-                onFavoriteClick = onFavoriteClick
-            )
-        }
-        item { SubtopicView(title = stringResource(R.string.name), content = show.name) }
-        item {
-            SubtopicView(
-                title = stringResource(R.string.airing_on),
-                content = if (show.schedule != null && show.schedule.days.isNotEmpty() && show.schedule.time.isNotBlank()) {
-                    stringResource(
-                        R.string.schedule,
-                        show.schedule.days.joinToString(separator = ", "),
-                        show.schedule.time
-                    )
-                } else {
-                    stringResource(R.string.unknown_schedule)
-                }
-            )
-        }
-        item {
-            SubtopicView(
-                title = stringResource(R.string.genres),
-                content = if (show.genres.isNullOrEmpty()) {
-                    stringResource(R.string.unknown_genres)
-                } else {
-                    show.genres.joinToString(separator = ", ")
-                }
-            )
-        }
-        item {
-            SubtopicView(
-                title = stringResource(R.string.summary),
-                content = if (show.summary.isNullOrEmpty()) {
-                    stringResource(R.string.unknown_summary)
-                } else {
-                    show.summary.trim()
-                }
-            )
-        }
-        item {
-            Text(
-                text = stringResource(R.string.seasons),
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier
-                    .padding(start = 16.dp)
-                    .fillMaxWidth(),
-                color = Color.Black,
-            )
-        }
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize(),
+            state = scrollState
+        ) {
+            item {
+                AsyncImage(
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data(show.image?.original)
+                        .error(R.drawable.show_avatar)
+                        .placeholder(R.drawable.show_avatar)
+                        .build(),
+                    contentScale = ContentScale.Crop,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(320.dp)
+                        .graphicsLayer {
+                            scrolledY += scrollState.firstVisibleItemScrollOffset - previousOffset
+                            translationY = scrolledY * 0.5f
+                            previousOffset = scrollState.firstVisibleItemScrollOffset
+                            alpha = min(1f, 1 - (scrolledY / 800f))
+                        }
+                )
+            }
 
-        when (seasonsByShow.status) {
-            Status.LOADING -> {
-                item { LoadingView() }
+            item {
+                FavoriteView(
+                    isFavorite = isFavorite,
+                    showId = show.id,
+                    onFavoriteClick = onFavoriteClick
+                )
             }
-            Status.SUCCESS -> {
-                seasonsByShow.data?.forEach { season ->
-                    item { SeasonView(season, onEpisodeClick) }
+            item { SubtopicView(title = stringResource(R.string.name), content = show.name) }
+            item {
+                SubtopicView(
+                    title = stringResource(R.string.airing_on),
+                    content = if (show.schedule != null && show.schedule.days.isNotEmpty() && show.schedule.time.isNotBlank()) {
+                        stringResource(
+                            R.string.schedule,
+                            show.schedule.days.joinToString(separator = ", "),
+                            show.schedule.time
+                        )
+                    } else {
+                        stringResource(R.string.unknown_schedule)
+                    }
+                )
+            }
+            item {
+                SubtopicView(
+                    title = stringResource(R.string.genres),
+                    content = if (show.genres.isNullOrEmpty()) {
+                        stringResource(R.string.unknown_genres)
+                    } else {
+                        show.genres.joinToString(separator = ", ")
+                    }
+                )
+            }
+            item {
+                SubtopicView(
+                    title = stringResource(R.string.summary),
+                    content = if (show.summary.isNullOrEmpty()) {
+                        stringResource(R.string.unknown_summary)
+                    } else {
+                        show.summary.trim()
+                    }
+                )
+            }
+            item {
+                Text(
+                    text = stringResource(R.string.seasons),
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier
+                        .padding(start = 16.dp)
+                        .fillMaxWidth(),
+                    color = Color.Black,
+                )
+            }
+
+            when (seasonsByShow.status) {
+                Status.LOADING -> {
+                    item { LoadingView() }
                 }
-                item { Spacer(modifier = Modifier.height(16.dp)) }
-            }
-            Status.ERROR -> {
-                item { ErrorView(seasonsByShow.message) }
+                Status.SUCCESS -> {
+                    seasonsByShow.data?.forEach { season ->
+                        item { SeasonView(season, onEpisodeClick) }
+                    }
+                    item { Spacer(modifier = Modifier.height(16.dp)) }
+                }
+                Status.ERROR -> {
+                    item { ErrorView(seasonsByShow.message) }
+                }
             }
         }
     }
+
+
 }
 
 @Composable
@@ -237,6 +262,7 @@ fun ShowDetailsScreenPreview() {
     TVmazeTheme {
         val seasonsByShow = Resource.success(DataMocks.seasons)
         ShowDetailsScreen(
+            navController = rememberNavController(),
             show = DataMocks.show,
             isFavorite = false,
             seasonsByShow = seasonsByShow,

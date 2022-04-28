@@ -67,6 +67,7 @@ fun MainNavigation(
         ) { backStackEntry ->
             backStackEntry.arguments?.getParcelable<Show>("show")?.let { show ->
                 ShowDetailsScreen(
+                    navController = navController,
                     show = show,
                     isFavorite = viewModel.isShowFavorite(showId = show.id),
                     seasonsByShow = viewModel.seasonsByShow,
@@ -90,7 +91,10 @@ fun MainNavigation(
             arguments = listOf(navArgument("episode") { type = EpisodeType() }),
         ) { backStackEntry ->
             backStackEntry.arguments?.getParcelable<Episode>("episode")?.let { episode ->
-                EpisodeDetailsScreen(episode)
+                EpisodeDetailsScreen(
+                    navController = navController,
+                    episode = episode
+                )
             }
         }
         composable(
