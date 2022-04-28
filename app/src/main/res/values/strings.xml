@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">TVmaze</string>
+
+    <string name="all_shows_tab">All Shows</string>
+    <string name="favorite_shows_tab">Favorites</string>
+
     <string name="hint_search_query">Search for shows or people…</string>
 
     <string name="name">Name</string>

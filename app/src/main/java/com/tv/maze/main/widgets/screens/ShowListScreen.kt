@@ -8,6 +8,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.rounded.Clear
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.runtime.*
@@ -40,6 +42,7 @@ import com.tv.maze.ui.theme.TVmazeTheme
 import com.tv.maze.utils.DataMocks
 import com.tv.maze.utils.Resource
 import com.tv.maze.utils.Status
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalPagerApi::class)
 @Composable
@@ -51,9 +54,12 @@ fun ShowListScreen(
     onShowClick: (Show) -> Unit,
     onPersonClick: (Person) -> Unit
 ) {
-    val pagerState = rememberPagerState()
+    val pagerState = key("yourInput") { rememberPagerState() }
     val coroutineScope = rememberCoroutineScope()
-    val pages = arrayListOf("All Shows", "Favorites")
+    val pages = listOf(
+        Icons.Filled.Home to stringResource(R.string.all_shows_tab),
+        Icons.Filled.Favorite to stringResource(R.string.favorite_shows_tab)
+    )
 
     Column {
         TabRow(
@@ -67,24 +73,15 @@ fun ShowListScreen(
             }
         ) {
             // Add tabs for all of our pages
-            pages.forEachIndexed { index, title ->
+            pages.forEachIndexed { index, (icon, title) ->
                 Tab(
-                    text = {
-                        Text(
-                            text = title,
-                            fontSize = 18.sp,
-                        )
-                    },
+                    text = { Text(text = title.uppercase()) },
+                    icon = { Icon(imageVector = icon, contentDescription = null) },
                     selected = pagerState.currentPage == index,
                     onClick = {
-                        //TODO fix crash
-//                        coroutineScope.launch {
-//                            try {
-//                                pagerState.animateScrollToPage(index)
-//                            } catch (e: Exception) {
-//
-//                            }
-//                        }
+                        coroutineScope.launch {
+                            pagerState.animateScrollToPage(index)
+                        }
                     },
                 )
             }
