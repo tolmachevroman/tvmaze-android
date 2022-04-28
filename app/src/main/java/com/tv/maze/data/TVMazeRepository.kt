@@ -38,7 +38,7 @@ class TVMazeRepository @Inject constructor(
             0
         )
         var result: Resource<ArrayList<Show>>
-        val filename = "shows.json"
+        val filename = "shows${page}.json"
         val millisecondsInOneDay = 8.64e+7
 
         if (System.currentTimeMillis() > (lastTimestamp + millisecondsInOneDay) || page > lastPage) {

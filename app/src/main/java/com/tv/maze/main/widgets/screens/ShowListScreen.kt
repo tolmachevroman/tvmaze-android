@@ -4,11 +4,7 @@ import android.view.MotionEvent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.GridItemSpan
-import androidx.compose.foundation.lazy.grid.LazyGridItemSpanScope
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -56,9 +52,10 @@ fun ShowListScreen(
     people: Resource<List<Person>>,
     onQueryChange: (String) -> Unit,
     onShowClick: (Show) -> Unit,
-    onPersonClick: (Person) -> Unit
+    onPersonClick: (Person) -> Unit,
+    onLoadMoreShows: () -> Unit
 ) {
-    val pagerState = key("yourInput") { rememberPagerState() }
+    val pagerState = rememberPagerState()
     val coroutineScope = rememberCoroutineScope()
     val pages = listOf(
         Icons.Filled.Home to stringResource(R.string.all_shows_tab),
@@ -98,10 +95,20 @@ fun ShowListScreen(
         ) { page ->
             when (page) {
                 0 -> {
-                    AllShowsTab(shows, people, onQueryChange, onShowClick, onPersonClick)
+                    AllShowsTab(
+                        shows = shows,
+                        people = people,
+                        onQueryChange = onQueryChange,
+                        onShowClick = onShowClick,
+                        onPersonClick = onPersonClick,
+                        onLoadMoreShows = onLoadMoreShows
+                    )
                 }
                 else -> {
-                    FavoritesTab(favoriteShows, onShowClick)
+                    FavoritesTab(
+                        favoriteShows = favoriteShows,
+                        onShowClick = onShowClick
+                    )
                 }
             }
         }
@@ -115,11 +122,17 @@ fun AllShowsTab(
     people: Resource<List<Person>>,
     onQueryChange: (String) -> Unit,
     onShowClick: (Show) -> Unit,
-    onPersonClick: (Person) -> Unit
+    onPersonClick: (Person) -> Unit,
+    onLoadMoreShows: () -> Unit
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
     var query by rememberSaveable { mutableStateOf("") }
     var showClearIcon by rememberSaveable { mutableStateOf(false) }
+
+    val lazyGridState = rememberLazyGridState()
+    lazyGridState.OnBottomReached {
+        onLoadMoreShows()
+    }
 
     Column(
         modifier = Modifier
@@ -187,7 +200,9 @@ fun AllShowsTab(
                             keyboardController?.hide()
                             false
                         } else true
-                    }) {
+                    },
+                    state = lazyGridState
+                ) {
 
                     if (query.isNotEmpty()) {
                         item(
@@ -249,14 +264,15 @@ fun FavoritesTab(
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(2)
-        ) {
-            when (favoriteShows.status) {
-                Status.LOADING -> {
-                    item { LoadingView() }
-                }
-                Status.SUCCESS -> {
+
+        when (favoriteShows.status) {
+            Status.LOADING -> {
+                LoadingView()
+            }
+            Status.SUCCESS -> {
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(2)
+                ) {
                     favoriteShows.data?.forEach { show ->
                         item {
                             ShowView(
@@ -268,13 +284,12 @@ fun FavoritesTab(
                         }
                     }
                 }
-                Status.ERROR -> {
-                    item { ErrorView(favoriteShows.message) }
-                }
+            }
+            Status.ERROR -> {
+                ErrorView(favoriteShows.message)
             }
         }
     }
-
 }
 
 @Composable
@@ -295,6 +310,7 @@ fun HeaderView(title: String) {
     }
 }
 
+
 @Preview(showBackground = true)
 @Composable
 fun ShowListScreenPreview() {
@@ -306,8 +322,33 @@ fun ShowListScreenPreview() {
             favoriteShows = shows,
             people = people,
             onQueryChange = { },
-            onShowClick = {},
-            onPersonClick = {}
+            onShowClick = { },
+            onPersonClick = { },
+            onLoadMoreShows = { }
         )
+    }
+}
+
+@Composable
+fun LazyGridState.OnBottomReached(
+    loadMore: () -> Unit
+) {
+    val shouldLoadMore = remember {
+        derivedStateOf {
+            val lastVisibleItem = layoutInfo.visibleItemsInfo.lastOrNull()
+                ?: return@derivedStateOf true
+
+            // trigger loading at 8 items from the end
+            lastVisibleItem.index == layoutInfo.totalItemsCount - 8
+        }
+    }
+
+    // Convert the state into a cold flow and collect
+    LaunchedEffect(shouldLoadMore) {
+        snapshotFlow { shouldLoadMore.value }
+            .collect {
+                // if should load more, then invoke loadMore
+                if (it) loadMore()
+            }
     }
 }

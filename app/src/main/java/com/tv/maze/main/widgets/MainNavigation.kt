@@ -58,7 +58,8 @@ fun MainNavigation(
                             json
                         )
                     )
-                }
+                },
+                onLoadMoreShows = { viewModel.onLoadMoreShows() }
             )
         }
         composable(

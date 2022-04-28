@@ -13,6 +13,7 @@ import com.tv.maze.data.models.Person
 import com.tv.maze.data.models.Season
 import com.tv.maze.data.models.Show
 import com.tv.maze.utils.Resource
+import com.tv.maze.utils.Status
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -32,7 +33,6 @@ class MainViewModel @Inject constructor(
 
     private val favoriteShowsIds = mutableListOf<Int>()
 
-    //TODO implement pagination
     private var currentPage = 0
 
     init {
@@ -43,9 +43,24 @@ class MainViewModel @Inject constructor(
     private fun getShows() {
         viewModelScope.launch {
             tvMazeRepository.getShows(currentPage).let { result ->
-                shows = result
+                // if result is successful, add new shows to the list
+                shows = if (result.status == Status.SUCCESS) {
+                    val data: ArrayList<Show> = arrayListOf()
+                    shows.data?.let { data.addAll(it) }
+                    result.data?.let { data.addAll(it) }
+
+                    Resource.success(data)
+                } else {
+                    result
+                }
+
             }
         }
+    }
+
+    fun onLoadMoreShows() {
+        currentPage += 1
+        getShows()
     }
 
     private fun getShowsAndAddToFavorites(showIds: List<Int>) {
@@ -131,10 +146,12 @@ class MainViewModel @Inject constructor(
             val showsEncoded =
                 sharedPreferences.getString(resources.getString(R.string.key_favorite_shows), "")
             if (showsEncoded.isNullOrEmpty()) {
-                favoriteShows = Resource.error(
-                    message = resources.getString(R.string.no_favorite_shows_yet),
-                    null
-                )
+                viewModelScope.launch {
+                    favoriteShows = Resource.error(
+                        message = resources.getString(R.string.no_favorite_shows_yet),
+                        null
+                    )
+                }
             } else {
                 showsEncoded
                     .split(",")
