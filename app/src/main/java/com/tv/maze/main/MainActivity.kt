@@ -31,7 +31,5 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-
-        mainViewModel.getAllShows()
     }
 }

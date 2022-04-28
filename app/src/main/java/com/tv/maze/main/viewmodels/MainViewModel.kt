@@ -37,9 +37,10 @@ class MainViewModel @Inject constructor(
 
     init {
         getFavoriteShows()
+        getShows()
     }
 
-    fun getAllShows() {
+    private fun getShows() {
         viewModelScope.launch {
             tvMazeRepository.getShows(currentPage).let { result ->
                 shows = result
