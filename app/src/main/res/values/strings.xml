@@ -4,6 +4,18 @@
     <string name="all_shows_tab">All Shows</string>
     <string name="favorite_shows_tab">Favorites</string>
 
+    <string name="welcome">Welcome to TVmaze</string>
+    <string name="toggle_password_visibility">Toggle password visibility</string>
+    <string name="login_or_create_new_pin_code">Login or create a new PIN code</string>
+    <string name="pin">PIN</string>
+    <string name="enter">Login</string>
+    <string name="or">or</string>
+    <string name="set_up_pin">Set up a new code</string>
+
+    <string name="biometric_prompt_title">Login</string>
+    <string name="biometric_prompt_subtitle">Use your biometric credentials to login</string>
+
+
     <string name="hint_search_query">Search for shows or people…</string>
 
     <string name="name">Name</string>
