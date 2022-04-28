@@ -6,6 +6,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyGridItemSpanScope
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -140,7 +142,8 @@ fun AllShowsTab(
                 Icon(
                     imageVector = Icons.Rounded.Search,
                     tint = MaterialTheme.colors.onBackground,
-                    contentDescription = stringResource(R.string.search_icon_description)
+                    contentDescription = stringResource(R.string.search_icon_description),
+                    modifier = Modifier.size(30.dp)
                 )
             },
             trailingIcon = {
@@ -150,11 +153,13 @@ fun AllShowsTab(
                             imageVector = Icons.Rounded.Clear,
                             tint = MaterialTheme.colors.onBackground,
                             contentDescription = stringResource(R.string.clear_icon_description),
-                            modifier = Modifier.clickable {
-                                showClearIcon = false
-                                query = ""
-                                onQueryChange("")
-                            }
+                            modifier = Modifier
+                                .size(30.dp)
+                                .clickable {
+                                    showClearIcon = false
+                                    query = ""
+                                    onQueryChange("")
+                                }
                         )
                     }
                 }
@@ -162,7 +167,7 @@ fun AllShowsTab(
             maxLines = 1,
             colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
             placeholder = { Text(text = stringResource(R.string.hint_search_query)) },
-            textStyle = MaterialTheme.typography.subtitle1,
+            textStyle = MaterialTheme.typography.h5,
             singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
             modifier = Modifier
@@ -185,7 +190,9 @@ fun AllShowsTab(
                     }) {
 
                     if (query.isNotEmpty()) {
-                        item {
+                        item(
+                            span = { GridItemSpan(maxCurrentLineSpan) }
+                        ) {
                             HeaderView(title = stringResource(R.string.shows_found))
                         }
                     }
@@ -203,7 +210,9 @@ fun AllShowsTab(
                     }
 
                     if (query.isNotEmpty()) {
-                        item {
+                        item(
+                            span = { GridItemSpan(maxCurrentLineSpan) }
+                        ) {
                             HeaderView(title = stringResource(R.string.people_found))
                         }
 
