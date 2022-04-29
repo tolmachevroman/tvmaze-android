@@ -14,14 +14,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tv.maze.R
-import com.tv.maze.ui.authentication.widgets.PasswordTextField
+import com.tv.maze.ui.authentication.widgets.views.PasswordTextField
 
 @Composable
 fun LoginScreen(
+    isPinEmpty: Boolean,
     error: String?,
     onPinChange: (String) -> Unit,
     onLogin: () -> Unit,
-    onCreatePin: () -> Unit
+    onCreatePin: () -> Unit,
+    onResetPin: () -> Unit
 ) {
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -37,7 +39,7 @@ fun LoginScreen(
         )
         Text(
             text = stringResource(R.string.login_or_create_new_pin_code),
-            modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 10.dp),
+            modifier = Modifier.padding(start = 32.dp, end = 32.dp, top = 10.dp),
             fontSize = 18.sp,
             textAlign = TextAlign.Center,
         )
@@ -46,10 +48,11 @@ fun LoginScreen(
             onValueChange = { value -> onPinChange(value) },
             label = { Text(text = stringResource(R.string.pin)) },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.NumberPassword),
-            isError = error != null,
+            error = error,
         )
         Spacer(modifier = Modifier.height(16.dp))
         Button(
+            enabled = !isPinEmpty && error.isNullOrEmpty(),
             onClick = { onLogin() },
             modifier = Modifier
                 .padding(horizontal = 16.dp)
@@ -68,6 +71,7 @@ fun LoginScreen(
         )
         Button(
             onClick = {
+                onResetPin()
                 onCreatePin()
             },
             modifier = Modifier

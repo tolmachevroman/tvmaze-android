@@ -7,6 +7,7 @@ import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.tv.maze.ui.authentication.viewmodels.AuthenticationViewModel
+import com.tv.maze.ui.authentication.widgets.screens.CreatePinScreen
 import com.tv.maze.ui.authentication.widgets.screens.LoginScreen
 
 enum class Route(val value: String) {
@@ -25,6 +26,7 @@ fun AuthenticationNavigation(
             Route.LOGIN_SCREEN.value,
         ) {
             LoginScreen(
+                isPinEmpty = viewModel.isPinEmpty,
                 error = viewModel.error,
                 onPinChange = { pin ->
                     viewModel.onPinChange(pin)
@@ -32,7 +34,22 @@ fun AuthenticationNavigation(
                 onLogin = { viewModel.onLogin() },
                 onCreatePin = {
                     navController.navigate(Route.CREATE_PIN_SCREEN.value)
-                }
+                },
+                onResetPin = { viewModel.onResetPin() }
+            )
+        }
+        composable(
+            Route.CREATE_PIN_SCREEN.value,
+        ) {
+            CreatePinScreen(
+                navController = navController,
+                isPinEmpty = viewModel.isPinEmpty,
+                error = viewModel.error,
+                onPinChange = { pin ->
+                    viewModel.onPinChange(pin)
+                },
+                onCreatePin = { viewModel.onCreate() },
+                onResetPin = { viewModel.onResetPin() }
             )
         }
     }

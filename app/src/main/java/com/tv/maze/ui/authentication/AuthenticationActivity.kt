@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.hardware.biometrics.BiometricPrompt
 import android.os.*
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -42,12 +43,29 @@ class AuthenticationActivity : ComponentActivity() {
             }
         }
 
+        authenticationViewModel.createdPin.observe(this) { createdPin ->
+            if (createdPin == null)
+                return@observe
+
+            if (createdPin) {
+                finishAndNavigateToMain()
+            } else {
+                Toast.makeText(this, getString(R.string.pin_codes_do_not_match), Toast.LENGTH_SHORT)
+                    .show()
+            }
+        }
+
         // Wait for Compose to render before showing biometric prompt
-        Handler(Looper.getMainLooper()).postDelayed(Runnable {
+        Handler(Looper.getMainLooper()).postDelayed({
             if (checkBiometricSupport()) {
                 buildBiometricPrompt()
             }
-        }, 1000)
+        }, 500)
+    }
+
+    private fun finishAndNavigateToMain() {
+        startActivity(Intent(this@AuthenticationActivity, MainActivity::class.java))
+        finish()
     }
 
     /**
@@ -67,8 +85,7 @@ class AuthenticationActivity : ComponentActivity() {
                 override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult?) {
                     super.onAuthenticationSucceeded(result)
                     println("Authentication Success!")
-                    startActivity(Intent(this@AuthenticationActivity, MainActivity::class.java))
-                    finish()
+                    finishAndNavigateToMain()
                 }
             }
 

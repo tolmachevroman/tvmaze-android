@@ -7,10 +7,13 @@
     <string name="welcome">Welcome to TVmaze</string>
     <string name="toggle_password_visibility">Toggle password visibility</string>
     <string name="login_or_create_new_pin_code">Login or create a new PIN code</string>
+    <string name="create_new_pin_code">Create new PIN code</string>
+    <string name="create_new_pin_code_and_use_it_later">Create new PIN code and use it later to login</string>
     <string name="pin">PIN</string>
     <string name="enter">Login</string>
     <string name="or">or</string>
     <string name="set_up_pin">Set up a new code</string>
+    <string name="create_and_login">Create and login</string>
 
     <string name="biometric_prompt_title">Login</string>
     <string name="biometric_prompt_subtitle">Use your biometric credentials to login</string>
@@ -37,6 +40,8 @@
     <string name="unknown_shows_list">Unknown shows list</string>
     <string name="unknown_error">Unknown error, please try later</string>
     <string name="could_not_find_shows">Could not find shows</string>
+    <string name="minimum_length_for_pin">Minimum length is 4 digits</string>
+    <string name="pin_codes_do_not_match">PIN codes do not match</string>
 
     <string name="search_icon_description">Search icon</string>
     <string name="clear_icon_description">Clear icon</string>
@@ -50,4 +55,5 @@
     <string name="key_last_get_shows_timestamp">last_get_shows_timestamp</string>
     <string name="key_last_get_shows_page">last_get_shows_page</string>
     <string name="key_favorite_shows">favorite_shows</string>
+    <string name="key_pin">pin</string>
 </resources>
