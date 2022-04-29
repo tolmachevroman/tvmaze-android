@@ -20,6 +20,7 @@ import com.tv.maze.ui.authentication.widgets.views.PasswordTextField
 fun LoginScreen(
     isPinEmpty: Boolean,
     error: String?,
+    isCreateButtonVisible: Boolean,
     onPinChange: (String) -> Unit,
     onLogin: () -> Unit,
     onCreatePin: () -> Unit,
@@ -63,25 +64,27 @@ fun LoginScreen(
                 text = stringResource(R.string.enter)
             )
         }
-        Text(
-            text = stringResource(R.string.or),
-            modifier = Modifier.padding(horizontal = 16.dp),
-            fontSize = 16.sp,
-            textAlign = TextAlign.Center,
-        )
-        Button(
-            onClick = {
-                onResetPin()
-                onCreatePin()
-            },
-            modifier = Modifier
-                .padding(horizontal = 16.dp)
-                .width(250.dp)
-                .align(Alignment.CenterHorizontally)
-        ) {
+        if (isCreateButtonVisible) {
             Text(
-                text = stringResource(R.string.set_up_pin)
+                text = stringResource(R.string.or),
+                modifier = Modifier.padding(horizontal = 16.dp),
+                fontSize = 16.sp,
+                textAlign = TextAlign.Center,
             )
+            Button(
+                onClick = {
+                    onResetPin()
+                    onCreatePin()
+                },
+                modifier = Modifier
+                    .padding(horizontal = 16.dp)
+                    .width(250.dp)
+                    .align(Alignment.CenterHorizontally)
+            ) {
+                Text(
+                    text = stringResource(R.string.set_up_pin)
+                )
+            }
         }
     }
 }

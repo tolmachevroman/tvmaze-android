@@ -43,11 +43,11 @@ class AuthenticationActivity : ComponentActivity() {
             }
         }
 
-        authenticationViewModel.createdPin.observe(this) { createdPin ->
-            if (createdPin == null)
+        authenticationViewModel.loginSuccessful.observe(this) { loginSuccessful ->
+            if (loginSuccessful == null)
                 return@observe
 
-            if (createdPin) {
+            if (loginSuccessful) {
                 finishAndNavigateToMain()
             } else {
                 Toast.makeText(this, getString(R.string.pin_codes_do_not_match), Toast.LENGTH_SHORT)

@@ -25,12 +25,27 @@ class AuthenticationViewModel @Inject constructor(
     private val minPinLength = 4
 
     private var pin = ""
+    private var savedPin: String? = null
 
     var error by mutableStateOf<String?>(null)
     var isPinEmpty by mutableStateOf(true)
+    var isCreateButtonVisible by mutableStateOf(true)
 
-    private val _createdPin = MutableLiveData<Boolean?>(null)
-    val createdPin: LiveData<Boolean?> get() = _createdPin
+    private val _loginSuccessful = MutableLiveData<Boolean?>(null)
+    val loginSuccessful: LiveData<Boolean?> get() = _loginSuccessful
+
+    init {
+        getSavedPin()
+    }
+
+    private fun getSavedPin() {
+        viewModelScope.launch(Dispatchers.IO) {
+            with(sharedPreferences) {
+                savedPin = getString(resources.getString(R.string.key_pin), null)
+                isCreateButtonVisible = savedPin == null
+            }
+        }
+    }
 
     fun onResetPin() {
         error = null
@@ -49,18 +64,13 @@ class AuthenticationViewModel @Inject constructor(
     }
 
     fun onLogin() {
-        viewModelScope.launch(Dispatchers.IO) {
-            with(sharedPreferences) {
-                val savedPin = getString(resources.getString(R.string.key_pin), null)
-                _createdPin.postValue(savedPin == pin)
-            }
-        }
+        _loginSuccessful.value = savedPin == pin
     }
 
     fun onCreate() {
         if (error == null) {
             viewModelScope.launch(Dispatchers.IO) {
-                _createdPin.postValue(true)
+                _loginSuccessful.postValue(true)
                 with(sharedPreferences.edit()) {
                     putString(
                         resources.getString(R.string.key_pin), pin

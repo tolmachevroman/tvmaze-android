@@ -28,6 +28,7 @@ fun AuthenticationNavigation(
             LoginScreen(
                 isPinEmpty = viewModel.isPinEmpty,
                 error = viewModel.error,
+                isCreateButtonVisible = viewModel.isCreateButtonVisible,
                 onPinChange = { pin ->
                     viewModel.onPinChange(pin)
                 },
